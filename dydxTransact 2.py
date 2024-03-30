@@ -1,7 +1,6 @@
 # 
 
 import time
-
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD
