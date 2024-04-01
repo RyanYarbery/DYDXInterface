@@ -1,4 +1,5 @@
 import time
+import os
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD
@@ -10,11 +11,11 @@ from dydx3.constants import ORDER_TYPE_LIMIT
 from web3.auto import w3  # Automatically detects and uses local Ethereum node
 
 # Presuming you have the API credentials and the Ethereum private key
-api_key = 'your_api_key'
-api_secret = 'your_api_secret'
-passphrase = 'your_api_passphrase'
-ethereum_private_key = 'your_ethereum_private_key'
-ethereum_address = 'your_ethereum_address'  # This should match the address derived from the private key
+api_key = os.getenv('dydxKey')
+api_secret = os.getenv('dydxSecret')
+passphrase = os.getenv('dydxPassphrase')
+ethereum_private_key = os.getenv('maskKey')
+ethereum_address = os.getenv('maskWallet')  # This should match the address derived from the private key
 
 client = Client(
     network_id=NETWORK_ID_SEPOLIA,
