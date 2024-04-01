@@ -7,11 +7,26 @@ from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_STATUS_OPEN
 from dydx3.constants import ORDER_TYPE_LIMIT
 
-# Initialize the client for the Sepolia testnet
+from web3.auto import w3  # Automatically detects and uses local Ethereum node
+
+# Presuming you have the API credentials and the Ethereum private key
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
+passphrase = 'your_api_passphrase'
+ethereum_private_key = 'your_ethereum_private_key'
+ethereum_address = 'your_ethereum_address'  # This should match the address derived from the private key
+
 client = Client(
-    network_id=NETWORK_ID_SEPOLIA,  # Network ID for the Sepolia testnet
-    host=API_HOST_SEPOLIA,  # API host for the Sepolia testnet
+    network_id=NETWORK_ID_SEPOLIA,
+    host=API_HOST_SEPOLIA,
+    eth_private_key=ethereum_private_key,
+    api_key_credentials={
+        'key': api_key,
+        'secret': api_secret,
+        'passphrase': passphrase,
+    },
 )
+
 
 # Derive STARK key (used for cryptographic operations on dYdX)
 stark_private_key = client.onboarding.derive_stark_key()
