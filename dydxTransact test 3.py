@@ -1,76 +1,63 @@
-# 
-
 import time
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD
 from dydx3.constants import NETWORK_ID_SEPOLIA
-from dydx3.constants import ORDER_SIDE_BUY
+from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_STATUS_OPEN
 from dydx3.constants import ORDER_TYPE_LIMIT
-from web3 import Web3
 
-# Ganache test address.
-ETHEREUM_ADDRESS = '0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b'
-
-# Ganache node.
-WEB_PROVIDER_URL = 'http://localhost:8545'
-
+# Initialize the client for the Sepolia testnet
 client = Client(
-    network_id=NETWORK_ID_SEPOLIA,
-    host=API_HOST_SEPOLIA,
-    default_ethereum_address=ETHEREUM_ADDRESS,
-    web3=Web3(Web3.HTTPProvider(WEB_PROVIDER_URL)),
+    network_id=NETWORK_ID_SEPOLIA,  # Network ID for the Sepolia testnet
+    host=API_HOST_SEPOLIA,  # API host for the Sepolia testnet
 )
 
-# Set STARK key.
+# Derive STARK key (used for cryptographic operations on dYdX)
 stark_private_key = client.onboarding.derive_stark_key()
 client.stark_private_key = stark_private_key
 
-# Get our position ID.
+# Get account information (to retrieve the unique position ID)
 account_response = client.private.get_account()
-position_id = account_response['account']['positionId']
+position_id = account_response['account']['position_id']  # Unique identifier for the trading position
 
-# Post a bid at a price that is unlikely to match.
+# User input for transaction parameters
+market = MARKET_ETH_USD  # Trading pair, here it is Ethereum to US Dollar
+side = input("Enter order side (buy/sell): ").strip().lower()  # 'buy' for buying, 'sell' for selling
+order_type = ORDER_TYPE_LIMIT  # Type of order, 'limit' for executing at a specific price
+size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
+price = input("Enter order price (in USD): ").strip()  # Price to buy/sell ETH in USD
+limit_fee = '0.0015'  # Fee for placing the order
+expiration_epoch_seconds = time.time() + 60  # Order expiration time (60 seconds from now)
+
+# Validate order side input
+if side not in [ORDER_SIDE_BUY, ORDER_SIDE_SELL]:
+    print("Invalid order side. Must be 'buy' or 'sell'.")
+    exit()
+
 order_params = {
-    'position_id': position_id,
-    'market': MARKET_ETH_USD,
-    'side': ORDER_SIDE_BUY,
-    'order_type': ORDER_TYPE_LIMIT,
-    'post_only': True,
-    'size': '0.0777',
-    'price': '20',
-    'limit_fee': '0.0015',
-    'expiration_epoch_seconds': time.time() + 5,
+    'position_id': position_id,  # Identifies the trading position for this order
+    'market': market,  # Specifies the market (trading pair) for the order
+    'side': side,  # Determines if this is a buy or sell order
+    'order_type': order_type,  # Defines the type of order (limit, market, etc.)
+    'post_only': True,  # Ensures the order is added to the order book and not immediately matched
+    'size': size,  # Specifies the amount of the asset to trade
+    'price': price,  # Defines the price at which to execute the trade
+    'limit_fee': limit_fee,  # The fee to be paid for executing the order
+    'expiration_epoch_seconds': expiration_epoch_seconds,  # When the order will expire and be removed if not filled
 }
+
+# Create the order on dYdX
 order_response = client.private.create_order(**order_params)
-order_id = order_response['order']['id']
+print("Order response:", order_response)
 
-# Replace the order at a higher price, several times.
-# Note that order replacement is done atomically in the matching engine.
-for replace_price in range(21, 26):
-    order_response = client.private.create_order(
-        **dict(
-            order_params,
-            price=str(replace_price),
-            cancel_id=order_id,
-        ),
-    )
-    order_id = order_response['order']['id']
-
-# Count open orders (there should be exactly one).
+# Fetch and display open orders to confirm the order was placed
 orders_response = client.private.get_orders(
-    market=MARKET_ETH_USD,
-    status=ORDER_STATUS_OPEN,
+    market=market,  # Filters the orders to the specified market
+    status=ORDER_STATUS_OPEN,  # Filters the orders to those that are still open
 )
-assert len(orders_response['orders']) == 1
+print("Open orders:", orders_response['orders'])
 
-# Cancel all orders.
-client.private.cancel_all_orders()
-
-# Count open orders (there should be none).
-orders_response = client.private.get_orders(
-    market=MARKET_ETH_USD,
-    status=ORDER_STATUS_OPEN,
-)
-assert len(orders_response['orders']) == 0
+# Uncomment the lines below to cancel all orders as part of the script's cleanup
+# client.private.cancel_all_orders()
+# print("All orders cancelled.")
