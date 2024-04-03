@@ -40,11 +40,11 @@ position_id = account_response['account']['position_id']  # Unique identifier fo
 # User input for transaction parameters
 market = MARKET_ETH_USD  # Trading pair, here it is Ethereum to US Dollar
 side = input("Enter order side (buy/sell): ").strip().lower()  # 'buy' for buying, 'sell' for selling
-order_type = ORDER_TYPE_LIMIT  # Type of order, 'limit' for executing at a specific price
+order_type = 'MARKET' #ORDER_TYPE_LIMIT  # Type of order, 'limit' for executing at a specific price
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
-price = input("Enter order price (in USD): ").strip()  # Price to buy/sell ETH in USD
-limit_fee = '0.0015'  # Fee for placing the order
-expiration_epoch_seconds = time.time() + 60  # Order expiration time (60 seconds from now)
+# price = input("Enter order price (in USD): ").strip()  # Price to buy/sell ETH in USD
+# limit_fee = '0.0015'  # Fee for placing the order
+# expiration_epoch_seconds = time.time() + 60  # Order expiration time (60 seconds from now)
 
 # Validate order side input
 if side not in [ORDER_SIDE_BUY, ORDER_SIDE_SELL]:
@@ -58,9 +58,9 @@ order_params = {
     'order_type': order_type,  # Defines the type of order (limit, market, etc.)
     'post_only': True,  # Ensures the order is added to the order book and not immediately matched
     'size': size,  # Specifies the amount of the asset to trade
-    'price': price,  # Defines the price at which to execute the trade
-    'limit_fee': limit_fee,  # The fee to be paid for executing the order
-    'expiration_epoch_seconds': expiration_epoch_seconds,  # When the order will expire and be removed if not filled
+    # 'price': price,  # Defines the price at which to execute the trade
+    # 'limit_fee': limit_fee,  # The fee to be paid for executing the order
+    # 'expiration_epoch_seconds': expiration_epoch_seconds,  # When the order will expire and be removed if not filled
 }
 
 # Create the order on dYdX
