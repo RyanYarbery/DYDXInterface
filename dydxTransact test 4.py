@@ -25,11 +25,9 @@ client = Client(
     },
 )
 
-# Ensure the private key is a hexadecimal string
-stark_private_key = str(client.onboarding.derive_stark_key())
 
 # Set STARK key.
-# stark_private_key = client.onboarding.derive_stark_key()
+stark_private_key = client.onboarding.derive_stark_key()
 client.stark_private_key = stark_private_key
 
 # Get account information (to retrieve the unique position ID)
