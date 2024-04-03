@@ -33,9 +33,16 @@ client = Client(
 stark_private_key = client.onboarding.derive_stark_key()
 client.stark_private_key = stark_private_key
 
-# Get account information (to retrieve the unique position ID)
-account_response = client.private.get_account()
-position_id = account_response['account']['position_id']  # Unique identifier for the trading position
+# # Get account information (to retrieve the unique position ID)
+# account_response = client.private.get_account()
+# position_id = account_response['account']['position_id']  # Unique identifier for the trading position
+
+# Get account information and extract the data from the response
+account_response = client.private.get_account().data
+
+# Assuming the response data is a dictionary, access the position ID
+position_id = account_response['account']['positionId']
+
 
 # User input for transaction parameters
 market = MARKET_ETH_USD  # Trading pair, here it is Ethereum to US Dollar
