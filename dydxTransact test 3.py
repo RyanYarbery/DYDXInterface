@@ -8,7 +8,7 @@ from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_STATUS_OPEN
 from dydx3.constants import ORDER_TYPE_LIMIT
 
-from web3.auto import w3  # Automatically detects and uses local Ethereum node
+# from web3.auto import w3  # Automatically detects and uses local Ethereum node
 
 # Presuming you have the API credentials and the Ethereum private key
 api_key = os.getenv('dydxKey')
