@@ -7,6 +7,9 @@ from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 
+# Import these functions like this from dydxInterface import place_limit_order, fetch_current_orders_and_positions, fetch_account_balance, fetch_eth_market_data
+
+
 def initialize_client():
     """
     Initializes and returns a dYdX client with the environment's API credentials.
