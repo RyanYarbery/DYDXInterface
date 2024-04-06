@@ -9,7 +9,6 @@ from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_STATUS_OPEN
 
-
 # Presuming you have the API credentials and the Ethereum private key
 api_key = os.getenv('dydxKey')
 api_secret = os.getenv('dydxSecret')
@@ -36,7 +35,6 @@ stark_private_key = stark_key_data['private_key']
 # Set the STARK private key in the client for further operations
 client.stark_private_key = stark_private_key
 
-
 # Get account information (to retrieve the unique position ID)
 account_response = client.private.get_account().data
 position_id = account_response['account']['positionId']
@@ -57,7 +55,6 @@ else:
 order_type = ORDER_TYPE_LIMIT  # Using market order type
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
 price = input("Enter order price (in USD): ").strip()
-
 
 order_params = {
     'position_id': position_id,
