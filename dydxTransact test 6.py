@@ -56,16 +56,20 @@ order_type = ORDER_TYPE_LIMIT  # Using market order type
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
 price = input("Enter order price (in USD): ").strip()
 
+# Set the expiration time to at least 1 minute in the future
+expiration_time = int(time.time()) + 300  # 60 seconds added to the current time
+
+
 order_params = {
     'position_id': position_id,
     'market': market,
     'side': side,
     'order_type': order_type,
     'size': size,
-    'post_only': True,  # Can be set to false if we want the order to fill immediately when conditions are met
+    'post_only': False,  # Can be set to false if we want the order to fill immediately when conditions are met
     'price': price,
-    'limit_fee': '0.0015',  # Dummy value, as market orders don't need a limit fee
-    'expiration_epoch_seconds': int(time.time()) + 5,  # Placeholder expiration time
+    'limit_fee': '0.0015', 
+    'expiration_epoch_seconds': expiration_time,  # Placeholder expiration time
 }
 
 # Create the market order on dYdX
