@@ -8,6 +8,17 @@ from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_STATUS_OPEN
 
+"""
+    Place a limit order on the dYdX exchange.
+
+    :param side_input: 'buy' or 'sell' (case insensitive) indicating the order side.
+    :param size: The amount of the asset to trade (as a string or float), e.g., '0.5' for 0.5 ETH.
+    :param price: The limit price at which to execute the order (as a string or float), e.g., '3348' for $3348.
+    :param expiration_minutes: The time in minutes until the order expires (as an integer), default is 5 minutes.
+
+    :return: The response from the order request as a dictionary.
+    """
+
 def place_limit_order(side_input, size, price, expiration_minutes=5):
     api_key = os.getenv('dydxKey')
     api_secret = os.getenv('dydxSecret')
