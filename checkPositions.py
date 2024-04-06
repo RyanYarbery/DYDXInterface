@@ -1,3 +1,4 @@
+
 import os
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
@@ -9,13 +10,12 @@ def fetch_current_orders_and_positions():
 
     :return: A tuple containing a list of open orders and a list of positions.
     """
-    # Load API credentials
+    # Initialize the dYdX client with the environment's API credentials
     api_key = os.getenv('dydxKey')
     api_secret = os.getenv('dydxSecret')
     passphrase = os.getenv('dydxPassphrase')
     ethereum_private_key = os.getenv('maskKey')
 
-    # Initialize the dYdX client
     client = Client(
         network_id=NETWORK_ID_SEPOLIA,
         host=API_HOST_SEPOLIA,
@@ -37,14 +37,16 @@ def fetch_current_orders_and_positions():
 
     return open_orders, positions
 
-# Example usage
-if __name__ == "__main__":
-    orders, positions = fetch_current_orders_and_positions()
-    
-    print("Open Orders:")
-    for order in orders:
-        print(order)
+# def main():
+#     orders, positions = fetch_current_orders_and_positions()
 
-    print("\nPositions:")
-    for position in positions:
-        print(position)
+#     print("Open Orders:")
+#     for order in orders:
+#         print(order)
+
+#     print("\nPositions:")
+#     for position in positions:
+#         print(position)
+
+# if __name__ == "__main__":
+#     main()
