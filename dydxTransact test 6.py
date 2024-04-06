@@ -5,7 +5,6 @@ from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD
 from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
-# from dydx3.constants import ORDER_TYPE_MARKET  # Assuming MARKET is the correct constant for market orders
 from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_STATUS_OPEN
 
