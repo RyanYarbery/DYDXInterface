@@ -27,8 +27,17 @@ client = Client(
 )
 
 # Derive STARK key (used for cryptographic operations on dYdX)
-stark_private_key = client.onboarding.derive_stark_key()
+stark_key_data = client.onboarding.derive_stark_key()
+
+# Extract the private key from the STARK key data
+stark_private_key = stark_key_data['private_key']
+
+# Print the derived STARK private key to verify its value
+# print("Derived STARK private key:", stark_private_key)
+
+# Set the STARK private key in the client for further operations
 client.stark_private_key = stark_private_key
+
 
 # Get account information (to retrieve the unique position ID)
 account_response = client.private.get_account().data
