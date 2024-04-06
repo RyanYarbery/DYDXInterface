@@ -85,3 +85,40 @@ def fetch_account_balance():
         'pendingWithdrawals': balance_info.get('pendingWithdrawals'),
         'quoteBalance': balance_info.get('quoteBalance')
     }
+
+# if __name__ == "__main__":
+#     # Test place_limit_order function
+#     print("Placing a limit order...")
+#     try:
+#         order_result = place_limit_order(
+#             side_input='buy',  # or 'sell'
+#             size='0.01',  # Specify the size
+#             price='1000',  # Specify the price
+#             post_only=True,
+#             limit_fee='0.0015',
+#             expiration_seconds=300  # 5 minutes
+#         )
+#         print("Limit Order Result:")
+#         print(order_result)
+#     except Exception as e:
+#         print(f"Error placing limit order: {e}")
+
+#     # Test fetch_current_orders_and_positions function
+#     print("\nFetching current orders and positions...")
+#     try:
+#         orders, positions = fetch_current_orders_and_positions()
+#         print("Current Orders:")
+#         print(orders)
+#         print("Current Positions:")
+#         print(positions)
+#     except Exception as e:
+#         print(f"Error fetching orders and positions: {e}")
+
+#     # Test fetch_account_balance function
+#     print("\nFetching account balance...")
+#     try:
+#         balance_info = fetch_account_balance()
+#         print("Account Balance:")
+#         print(balance_info)
+#     except Exception as e:
+#         print(f"Error fetching account balance: {e}")
