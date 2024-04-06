@@ -59,11 +59,6 @@ else:
 order_type = ORDER_TYPE_MARKET  # Using market order type
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
 
-# Validate order side input
-if side not in [ORDER_SIDE_BUY.lower(), ORDER_SIDE_SELL.lower()]:
-    print("Invalid order side. Must be 'buy' or 'sell'.")
-    exit()
-
 order_params = {
     'position_id': position_id,
     'market': market,
