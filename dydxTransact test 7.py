@@ -74,9 +74,9 @@ def place_limit_order(side_input, size, price, post_only=True, limit_fee='0.0015
     return order_response.data
 
 # Example usage
-if __name__ == "__main__":
-    side_input = 'buy'  # or ORDER_SIDE_SELL
-    size = 0.5  # Amount of ETH
-    price = 3362  # Price in USD
-    result = place_limit_order(side_input, size, price)
-    print("Order response:", result)
+# if __name__ == "__main__":
+#     side_input = 'buy'  # or ORDER_SIDE_SELL
+#     size = 0.5  # Amount of ETH
+#     price = 3362  # Price in USD
+#     result = place_limit_order(side_input, size, price)
+#     print("Order response:", result)
