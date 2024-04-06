@@ -84,6 +84,35 @@ def fetch_account_balance():
         'quoteBalance': balance_info.get('quoteBalance')
     }
 
+def fetch_eth_market_data():
+    """
+    Fetches market data for Ethereum from the dYdX exchange.
+
+    :return: A dictionary with specific market details for Ethereum.
+    """
+    client = initialize_client()
+
+    # Fetch all market data
+    market_data_response = client.public.get_markets()
+    market_data = market_data_response.data.get('markets', {})
+
+    # Extract ETH-USD market data
+    eth_data = market_data.get('ETH-USD', {})
+
+    # Extract specific details
+    eth_details = {
+        'indexPrice': eth_data.get('indexPrice'),
+        'oraclePrice': eth_data.get('oraclePrice'),
+        'priceChange24H': eth_data.get('priceChange24H'),
+        'openInterest': eth_data.get('openInterest'),
+        'volume24H': eth_data.get('volume24H'),
+        'trades24H': eth_data.get('trades24H'),
+        'nextFundingRate': eth_data.get('nextFundingRate'),
+        'nextFundingAt': eth_data.get('nextFundingAt')
+    }
+
+    return eth_details
+
 # if __name__ == "__main__":
 #     # Test place_limit_order function
 #     print("Placing a limit order...")
@@ -120,3 +149,11 @@ def fetch_account_balance():
 #         print(balance_info)
 #     except Exception as e:
 #         print(f"Error fetching account balance: {e}")
+
+#     print("\nFetching Ethereum market data...")
+#     try:
+#         eth_market_data = fetch_eth_market_data()
+#         print("Ethereum Market Data:")
+#         print(eth_market_data)
+#     except Exception as e:
+#         print(f"Error fetching Ethereum market data: {e}")
