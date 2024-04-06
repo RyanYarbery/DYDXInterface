@@ -45,7 +45,17 @@ position_id = account_response['account']['positionId']
 
 # User input for transaction parameters
 market = MARKET_ETH_USD  # Trading pair, here it is Ethereum to US Dollar
-side = input("Enter order side (buy/sell): ").strip().lower()  # 'buy' for buying, 'sell' for selling
+side_input = input("Enter order side (buy/sell): ").strip().lower()  # 'buy' for buying, 'sell' for selling
+
+# Map user input to the corresponding constant
+if side_input == 'buy':
+    side = ORDER_SIDE_BUY
+elif side_input == 'sell':
+    side = ORDER_SIDE_SELL
+else:
+    print("Invalid order side. Must be 'buy' or 'sell'.")
+    exit()
+
 order_type = ORDER_TYPE_MARKET  # Using market order type
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
 
@@ -61,8 +71,8 @@ order_params = {
     'order_type': order_type,
     'size': size,
     'post_only': False,  # Assuming False is appropriate for market orders
-    'price': '0',  # Dummy value, as market orders don't need a price
-    'limit_fee': '0',  # Dummy value, as market orders don't need a limit fee
+    'price': '1',  # Dummy value, as market orders don't need a price
+    'limit_fee': '0.0015',  # Dummy value, as market orders don't need a limit fee
     'expiration_epoch_seconds': int(time.time()) + 60,  # Placeholder expiration time
 }
 
