@@ -5,7 +5,8 @@ from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD
 from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
-from dydx3.constants import ORDER_TYPE_MARKET  # Assuming MARKET is the correct constant for market orders
+# from dydx3.constants import ORDER_TYPE_MARKET  # Assuming MARKET is the correct constant for market orders
+from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_STATUS_OPEN
 
 
@@ -32,9 +33,6 @@ stark_key_data = client.onboarding.derive_stark_key()
 # Extract the private key from the STARK key data
 stark_private_key = stark_key_data['private_key']
 
-# Print the derived STARK private key to verify its value
-# print("Derived STARK private key:", stark_private_key)
-
 # Set the STARK private key in the client for further operations
 client.stark_private_key = stark_private_key
 
@@ -56,8 +54,10 @@ else:
     print("Invalid order side. Must be 'buy' or 'sell'.")
     exit()
 
-order_type = ORDER_TYPE_MARKET  # Using market order type
+order_type = ORDER_TYPE_LIMIT  # Using market order type
 size = input("Enter order size (amount of ETH): ").strip()  # Amount of ETH to buy or sell
+price = input("Enter order price (in USD): ").strip()
+
 
 order_params = {
     'position_id': position_id,
@@ -65,10 +65,10 @@ order_params = {
     'side': side,
     'order_type': order_type,
     'size': size,
-    'post_only': False,  # Assuming False is appropriate for market orders
-    'price': '1',  # Dummy value, as market orders don't need a price
+    'post_only': True,  # Can be set to false if we want the order to fill immediately when conditions are met
+    'price': price,
     'limit_fee': '0.0015',  # Dummy value, as market orders don't need a limit fee
-    'expiration_epoch_seconds': int(time.time()) + 60,  # Placeholder expiration time
+    'expiration_epoch_seconds': int(time.time()) + 5,  # Placeholder expiration time
 }
 
 # Create the market order on dYdX
