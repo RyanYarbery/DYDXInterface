@@ -44,10 +44,10 @@ def fetch_account_balance():
     return balance_details
 
 
-def main():
-    balance_info = fetch_account_balance()
-    print("Account Balance:")
-    print(balance_info)
+# def main():
+#     balance_info = fetch_account_balance()
+#     print("Account Balance:")
+#     print(balance_info)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
