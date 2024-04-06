@@ -1,5 +1,3 @@
-# dydx_helpers.py
-
 import time
 import os
 from dydx3 import Client
