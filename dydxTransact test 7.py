@@ -7,16 +7,16 @@ from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 
-def place_limit_order(side, size, price, post_only=True, limit_fee='0.0015', expiration_seconds=300, position_id=None):
+def place_limit_order(side_input, size, price, post_only=True, limit_fee='0.0015', expiration_seconds=300, position_id=None):
     """
     Place a limit order on the dYdX exchange.
 
-    :param side: 'BUY' or 'SELL' indicating the order side.
+    :param side_input: 'BUY' or 'SELL' indicating the order side.
     :param size: The amount of the asset to trade, e.g., 0.5 for 0.5 ETH.
     :param price: The limit price at which to execute the order, e.g., 3348 for $3348.
     :param post_only: Whether the order should be post only, default is True.
     :param limit_fee: The fee rate for the order, default is '0.0015'.
-    :param expiration_minutes: The time in minutes until the order expires, default is 5 minutes.
+    :param expiration_seconds: The time in seconds until the order expires, default is 5 minutes.
     :param position_id: Optional custom position ID. If not provided, it's fetched from the account info.
 
     :return: The response from the order request as a dictionary.
@@ -46,6 +46,14 @@ def place_limit_order(side, size, price, post_only=True, limit_fee='0.0015', exp
         account_response = client.private.get_account().data
         position_id = account_response['account']['positionId']
 
+# Convert side input to the appropriate constant
+    if side_input.lower() == 'buy':
+        side = ORDER_SIDE_BUY
+    elif side_input.lower() == 'sell':
+        side = ORDER_SIDE_SELL
+    else:
+        raise ValueError("Invalid order side. Must be 'buy' or 'sell'.")
+    
     # Set the expiration time
     expiration_time = int(time.time()) + expiration_seconds
 
