@@ -130,6 +130,20 @@ def cancel_order(position_id):
     
     return cancel_response.data
 
+def cancel_all_orders():
+    """
+    Cancels all open orders on the dYdX exchange.
+
+    :return: The response from the cancel all orders request.
+    """
+    client = initialize_client()
+
+    # Cancel all orders
+    cancel_response = client.private.cancel_all_orders()
+    
+    return cancel_response.data
+
+
 
 # if __name__ == "__main__":
 #     # Test place_limit_order function
@@ -188,3 +202,13 @@ def cancel_order(position_id):
 #         print(cancel_result)
 #     except Exception as e:
 #         print(f"Error cancelling order: {e}")
+
+# if __name__ == "__main__":
+#     # Test cancel_all_orders function
+#     print("\nCancelling all orders...")
+#     try:
+#         cancel_all_result = cancel_all_orders()
+#         print("Cancel All Orders Result:")
+#         print(cancel_all_result)
+#     except Exception as e:
+#         print(f"Error cancelling all orders: {e}")
