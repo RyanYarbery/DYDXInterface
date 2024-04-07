@@ -143,18 +143,20 @@ def cancel_all_orders():
     
     return cancel_response.data
 
-def close_position(position_id):
+# Have to rethink this one
+# def close_position(position_id, price):
     """
-    Closes a position on the dYdX exchange given a position_id.
+    Closes a position on the dYdX exchange given a position_id using a limit order.
 
     :param position_id: The ID of the position to close.
+    :param price: The limit price at which to close the position.
     :return: The response from the order placed to close the position.
     """
     client = initialize_client()
 
-    # Fetch the current position to determine its size and market
-    position_response = client.private.get_position_by_id(position_id=position_id)
-    position = position_response.data.get('position')
+    # Fetch all positions and find the one with the matching position_id
+    positions_response = client.private.get_positions()
+    position = next((p for p in positions_response.data.get('positions', []) if p.get('positionId') == position_id), None)
 
     if not position:
         raise ValueError(f"No position found with position_id {position_id}")
@@ -165,17 +167,17 @@ def close_position(position_id):
     # Determine the side to close the position
     side = ORDER_SIDE_SELL if float(position['size']) > 0 else ORDER_SIDE_BUY
 
-    # Place a market order to close the position
+    # Place a limit order to close the position
     order_response = client.private.create_order(
         market=market,
         side=side,
         order_type=ORDER_TYPE_LIMIT,
         size=str(size),
-        post_only=False 
+        price=str(price),
+        post_only=False  # Ensure the order can execute immediately
     )
     
     return order_response.data
-
 
 
 
@@ -186,8 +188,8 @@ def close_position(position_id):
 #         order_result = place_limit_order(
 #             side_input='buy',  # or 'sell'
 #             size='0.01',  # Specify the size
-#             price='1000',  # Specify the price
-#             post_only=True,
+#             price='3397.5',  # Specify the price
+#             post_only=False,
 #             limit_fee='0.0015',
 #             expiration_seconds=300  # 5 minutes
 #         )
@@ -248,8 +250,8 @@ def close_position(position_id):
 #         print(f"Error cancelling all orders: {e}")
 
 # if __name__ == "__main__":
-#     position_id = 'your_position_id_here'  # Replace with your actual position ID
-#     close_price = 'your_price_here'  # Replace with the price at which you want to close the position
+#     position_id = '2f9be457ed6efd2054b1d7ff24ba26ff20a7779888169cd5d5a03e70cfe66b4'  # Replace with your actual position ID
+#     close_price = '3392.7'  # Replace with the price at which you want to close the position
 
 #     print(f"\nClosing position {position_id} at price {close_price}...")
 #     try:
