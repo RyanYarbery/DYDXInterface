@@ -116,6 +116,21 @@ def fetch_eth_market_data():
 
     return eth_details
 
+def cancel_order(position_id):
+    """
+    Cancels an order on the dYdX exchange given a position_id.
+
+    :param position_id: The ID of the position associated with the order to cancel.
+    :return: The response from the cancel order request.
+    """
+    client = initialize_client()
+
+    # Cancel the order
+    cancel_response = client.private.cancel_order(order_id=position_id)
+    
+    return cancel_response.data
+
+
 # if __name__ == "__main__":
 #     # Test place_limit_order function
 #     print("Placing a limit order...")
@@ -160,3 +175,16 @@ def fetch_eth_market_data():
 #         print(eth_market_data)
 #     except Exception as e:
 #         print(f"Error fetching Ethereum market data: {e}")
+
+# if __name__ == "__main__":
+#     # Other test functions...
+
+#     # Test cancel_order function
+#     print("\nCancelling an order...")
+#     try:
+#         position_id_to_cancel = '26f8721eb69f7f885dd6f3a7e80a395ffbb8dc0d6ce801376a7d7deb71401f5'  # Replace with the actual position ID you want to cancel
+#         cancel_result = cancel_order(position_id_to_cancel)
+#         print("Cancel Order Result:")
+#         print(cancel_result)
+#     except Exception as e:
+#         print(f"Error cancelling order: {e}")
