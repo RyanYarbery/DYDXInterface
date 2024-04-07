@@ -143,6 +143,40 @@ def cancel_all_orders():
     
     return cancel_response.data
 
+def close_position(position_id):
+    """
+    Closes a position on the dYdX exchange given a position_id.
+
+    :param position_id: The ID of the position to close.
+    :return: The response from the order placed to close the position.
+    """
+    client = initialize_client()
+
+    # Fetch the current position to determine its size and market
+    position_response = client.private.get_position_by_id(position_id=position_id)
+    position = position_response.data.get('position')
+
+    if not position:
+        raise ValueError(f"No position found with position_id {position_id}")
+
+    market = position['market']
+    size = abs(float(position['size']))  # Get the absolute size to ensure we close the entire position
+
+    # Determine the side to close the position
+    side = ORDER_SIDE_SELL if float(position['size']) > 0 else ORDER_SIDE_BUY
+
+    # Place a market order to close the position
+    order_response = client.private.create_order(
+        market=market,
+        side=side,
+        order_type=ORDER_TYPE_LIMIT,
+        size=str(size),
+        post_only=False 
+    )
+    
+    return order_response.data
+
+
 
 
 # if __name__ == "__main__":
@@ -212,3 +246,16 @@ def cancel_all_orders():
 #         print(cancel_all_result)
 #     except Exception as e:
 #         print(f"Error cancelling all orders: {e}")
+
+# if __name__ == "__main__":
+#     position_id = 'your_position_id_here'  # Replace with your actual position ID
+#     close_price = 'your_price_here'  # Replace with the price at which you want to close the position
+
+#     print(f"\nClosing position {position_id} at price {close_price}...")
+#     try:
+#         close_result = close_position(position_id, close_price)
+#         print("Close Position Result:")
+#         print(close_result)
+#     except Exception as e:
+#         print(f"Error closing position: {e}")
+
