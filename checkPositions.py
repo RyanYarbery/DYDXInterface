@@ -37,16 +37,16 @@ def fetch_current_orders_and_positions():
 
     return open_orders, positions
 
-# def main():
-#     orders, positions = fetch_current_orders_and_positions()
+def main():
+    orders, positions = fetch_current_orders_and_positions()
 
-#     print("Open Orders:")
-#     for order in orders:
-#         print(order)
+    print("Open Orders:")
+    for order in orders:
+        print(order)
 
-#     print("\nPositions:")
-#     for position in positions:
-#         print(position)
+    print("\nPositions:")
+    for position in positions:
+        print(position)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
