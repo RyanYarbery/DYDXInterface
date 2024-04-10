@@ -6,7 +6,9 @@ from dydx3.constants import MARKET_ETH_USD
 from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
+from dydx3.constants import ORDER_TYPE_TRAILING_STOP
 
+# Potential for error to occur when limit order and trailing order are placed consecutively
 
 def initialize_client():
     """
@@ -142,6 +144,59 @@ def cancel_all_orders():
     
     return cancel_response.data
 
+def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, market=MARKET_ETH_USD, limit_fee='0.0015', time_in_force='GTT', expiration_seconds=3600, position_id=None):
+    """
+    NOTES: I think this order should be generated with the same info at the same time as a limit order. If it is a sell, the trailing percent has to be negative.
+    Time In Force Acronyms:
+    Good Till Cancelled (GTC): The order remains active until it is either filled or manually cancelled by the trader.
+    Good Till Time (GTT): The order will expire at a specific time unless it is filled or cancelled before that time.
+    Immediate or Cancel (IOC): The order must be executed immediately. Any portion of the order that cannot be filled immediately is cancelled.
+    Fill or Kill (FOK): The order must be filled in its entirety immediately, or it is entirely cancelled.
+
+    Place a trailing stop order on dYdX.
+
+    :param market: Market symbol, e.g., 'ETH-USD'.
+    :param size: Amount of the asset to sell.
+    :param trailing_percent: The percentage the trigger price should trail the market price.
+    :param side: 'SELL' for a stop loss order (default). Use 'BUY' for a stop gain order.
+    :param time_in_force: Order's time in force, 'GTT' (Good 'Til Time) by default.
+    :param expiration_seconds: Number of seconds until the order expires, default is 3600 (1 hour).
+    :return: The response from the order request.
+    """
+    client = initialize_client()
+    stark_key_data = client.onboarding.derive_stark_key()
+    client.stark_private_key = stark_key_data['private_key']
+
+    if not position_id:
+        account_response = client.private.get_account().data
+        position_id = account_response['account']['positionId']
+
+    if side_input.lower() == 'buy':
+        side = ORDER_SIDE_BUY
+    elif side_input.lower() == 'sell':
+        side = ORDER_SIDE_SELL
+    else:
+        raise ValueError("Invalid order side. Must be 'buy' or 'sell'.")
+    
+    order_params = {
+        'position_id': position_id,
+        'market': market,
+        'side': side,
+        'order_type': ORDER_TYPE_TRAILING_STOP,
+        'size': str(size),
+        'trailing_percent': str(trailing_percent),
+        'limit_fee': limit_fee,
+        'post_only': False,
+        'time_in_force': time_in_force,
+        'expiration_epoch_seconds': int(time.time()) + expiration_seconds,
+    }
+
+    if price:
+        order_params['price'] = str(price)
+
+    order_response = client.private.create_order(**order_params)
+    return order_response.data
+
 # if __name__ == "__main__":
 #     # Test place_limit_order function
 #     print("Placing a limit order...")
@@ -209,4 +264,22 @@ def cancel_all_orders():
 #         print(cancel_all_result)
 #     except Exception as e:
 #         print(f"Error cancelling all orders: {e}")
+
+if __name__ == "__main__":
+    print("\nPlacing a trailing stop order...")
+    try:
+        trailing_stop_result = place_trailing_stop_order(
+            price='3400',
+            size='0.05',  # Specify the size
+            side_input='sell',  # 'buy' or 'sell'
+            trailing_percent=-0.005,  # Specify the trailing percent
+            market='ETH-USD',  # Specify the market
+            time_in_force='GTT',  # Specify time in force
+            expiration_seconds=7200  # 2 hours
+        )
+        print("Trailing Stop Order Result:")
+        print(trailing_stop_result)
+    except Exception as e:
+        print(f"Error placing trailing stop order: {e}")
+
 
