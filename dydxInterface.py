@@ -9,6 +9,7 @@ from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_TYPE_TRAILING_STOP
 
 # Potential for error to occur when limit order and trailing order are placed consecutively
+# Potential to reduce steps regarding client initializing between functions
 
 def initialize_client():
     """
@@ -278,5 +279,38 @@ def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, m
 #         print(trailing_stop_result)
 #     except Exception as e:
 #         print(f"Error placing trailing stop order: {e}")
+
+# if __name__ == "__main__":
+#     try:
+#         # Place a limit buy order
+#         print("Placing a limit buy order...")
+#         limit_order_result = place_limit_order(
+#             side_input='buy',  # or 'sell'
+#             size='0.1',  # Specify the size
+#             price='3300',  # Specify the price for limit order
+#             post_only=False,
+#             limit_fee='0.0015',
+#             expiration_seconds=7200  # 2 hours
+#         )
+#         print("Limit Order Result:")
+#         print(limit_order_result)
+
+#         # Place a trailing stop buy order
+#         print("\nPlacing a trailing stop buy order...")
+#         trailing_stop_order_result = place_trailing_stop_order(
+#             size='0.1',  # Specify the size, should match or be less than the limit order size
+#             side_input='buy',  # 'buy' or 'sell'
+#             price='3600',  # Specify the trigger price for trailing stop order
+#             trailing_percent=0.01,  # Specify the trailing percent
+#             market=MARKET_ETH_USD,  # Specify the market
+#             time_in_force='GTT',  # Specify time in force
+#             expiration_seconds=7200  # 2 hours
+#         )
+#         print("Trailing Stop Order Result:")
+#         print(trailing_stop_order_result)
+
+#     except Exception as e:
+#         print(f"Error in placing orders: {e}")
+
 
 
