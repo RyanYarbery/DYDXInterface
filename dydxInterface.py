@@ -8,7 +8,6 @@ from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_TYPE_TRAILING_STOP
 
-# Potential for error to occur when limit order and trailing order are placed consecutively
 # Potential to reduce steps regarding client initializing between functions
 
 def initialize_client():
