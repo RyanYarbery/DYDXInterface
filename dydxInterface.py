@@ -117,7 +117,7 @@ def fetch_eth_market_data():
     return eth_details
 
 # Need to rename to order_id
-def cancel_order(position_id):
+def cancel_order(order_id):
     """
     Cancels an order on the dYdX exchange given a position_id.
 
@@ -127,7 +127,7 @@ def cancel_order(position_id):
     client = initialize_client()
 
     # Cancel the order
-    cancel_response = client.private.cancel_order(order_id=position_id)
+    cancel_response = client.private.cancel_order(order_id)
     
     return cancel_response.data
 
@@ -267,10 +267,10 @@ def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, m
 #     print("\nPlacing a trailing stop order...")
 #     try:
 #         trailing_stop_result = place_trailing_stop_order(
-#             price='3400',
+#             price='3800',
 #             size='0.05',  # Specify the size
-#             side_input='sell',  # 'buy' or 'sell'
-#             trailing_percent=-0.005,  # Specify the trailing percent
+#             side_input='buy',  # 'buy' or 'sell'
+#             trailing_percent=0.005,  # Specify the trailing percent
 #             market='ETH-USD',  # Specify the market
 #             time_in_force='GTT',  # Specify time in force
 #             expiration_seconds=7200  # 2 hours
