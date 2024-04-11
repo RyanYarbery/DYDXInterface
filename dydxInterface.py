@@ -116,7 +116,6 @@ def fetch_eth_market_data():
 
     return eth_details
 
-# Need to rename to order_id
 def cancel_order(order_id):
     """
     Cancels an order on the dYdX exchange given a position_id.
