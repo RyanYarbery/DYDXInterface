@@ -9,6 +9,7 @@ from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_TYPE_TRAILING_STOP
 
 # Potential to reduce steps regarding client initializing between functions
+# Can combine limit and trailing functions into one create order function with more parameters. Doesn't matter now but will do in the future
 
 def initialize_client():
     """
