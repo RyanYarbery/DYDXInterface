@@ -184,15 +184,13 @@ def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, m
         'side': side,
         'order_type': ORDER_TYPE_TRAILING_STOP,
         'size': str(size),
+        'price': str(price),
         'trailing_percent': str(trailing_percent),
         'limit_fee': limit_fee,
         'post_only': False,
         'time_in_force': time_in_force,
         'expiration_epoch_seconds': int(time.time()) + expiration_seconds,
     }
-
-    if price:
-        order_params['price'] = str(price)
 
     order_response = client.private.create_order(**order_params)
     return order_response.data
