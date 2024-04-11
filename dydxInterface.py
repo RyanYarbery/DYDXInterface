@@ -265,21 +265,21 @@ def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, m
 #     except Exception as e:
 #         print(f"Error cancelling all orders: {e}")
 
-if __name__ == "__main__":
-    print("\nPlacing a trailing stop order...")
-    try:
-        trailing_stop_result = place_trailing_stop_order(
-            price='3400',
-            size='0.05',  # Specify the size
-            side_input='sell',  # 'buy' or 'sell'
-            trailing_percent=-0.005,  # Specify the trailing percent
-            market='ETH-USD',  # Specify the market
-            time_in_force='GTT',  # Specify time in force
-            expiration_seconds=7200  # 2 hours
-        )
-        print("Trailing Stop Order Result:")
-        print(trailing_stop_result)
-    except Exception as e:
-        print(f"Error placing trailing stop order: {e}")
+# if __name__ == "__main__":
+#     print("\nPlacing a trailing stop order...")
+#     try:
+#         trailing_stop_result = place_trailing_stop_order(
+#             price='3400',
+#             size='0.05',  # Specify the size
+#             side_input='sell',  # 'buy' or 'sell'
+#             trailing_percent=-0.005,  # Specify the trailing percent
+#             market='ETH-USD',  # Specify the market
+#             time_in_force='GTT',  # Specify time in force
+#             expiration_seconds=7200  # 2 hours
+#         )
+#         print("Trailing Stop Order Result:")
+#         print(trailing_stop_result)
+#     except Exception as e:
+#         print(f"Error placing trailing stop order: {e}")
 
 
