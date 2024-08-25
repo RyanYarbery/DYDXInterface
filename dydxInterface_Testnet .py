@@ -148,6 +148,28 @@ def fetch_eth_market_data():
 
     return eth_details
 
+def fetch_eth_price():
+    """
+    Fetches market data for Ethereum from the dYdX exchange.
+
+    :return: A dictionary with specific market details for Ethereum.
+    """
+    client = initialize_client()
+
+    # Fetch all market data
+    market_data_response = client.public.get_markets()
+    market_data = market_data_response.data.get('markets', {})
+
+    # Extract ETH-USD market data
+    eth_data = market_data.get('ETH-USD', {})
+
+    # Extract specific details
+    eth_details = {
+        'indexPrice': eth_data.get('indexPrice'),
+    }
+
+    return float(eth_details)
+
 def cancel_order(order_id):
     """
     Cancels an order on the dYdX exchange given a position_id.
