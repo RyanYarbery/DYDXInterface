@@ -7,6 +7,8 @@ from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
 from dydx3.constants import ORDER_TYPE_TRAILING_STOP
+from dydx3.constants import ORDER_STATUS_OPEN
+from dydx3.constants import POSITION_STATUS_OPEN
 
 # Potential to reduce steps regarding client initializing between functions
 
@@ -16,10 +18,10 @@ def initialize_client():
 
     :return: Initialized dYdX Client object.
     """
-    api_key = os.getenv('dydxKey')
-    api_secret = os.getenv('dydxSecret')
-    passphrase = os.getenv('dydxPassphrase')
-    ethereum_private_key = os.getenv('maskKey')
+    api_key = os.getenv('testdydxKey')
+    api_secret = os.getenv('testdydxSecret')
+    passphrase = os.getenv('testdydxPassphrase')
+    ethereum_private_key = os.getenv('testmaskKey')
 
     return Client(
         network_id=NETWORK_ID_SEPOLIA,
@@ -64,15 +66,43 @@ def place_limit_order(side_input, size, price, post_only=True, limit_fee='0.0015
 
     return client.private.create_order(**order_params).data
 
-def fetch_current_orders_and_positions():
+def fetch_orders():
     client = initialize_client()
-    open_orders_response = client.private.get_orders()
+
+    orders_response = client.private.get_orders()
+    orders = orders_response.data.get('orders', [])
+
+    return orders
+
+def fetch_open_orders():
+    client = initialize_client()
+
+    open_orders_response = client.private.get_orders(
+        status = ORDER_STATUS_OPEN
+    )
+
     open_orders = open_orders_response.data.get('orders', [])
 
+    return open_orders
+
+def fetch_positions():
+    client = initialize_client()
+    
     positions_response = client.private.get_positions()
     positions = positions_response.data.get('positions', [])
 
-    return open_orders, positions
+    return positions
+
+def fetch_open_positions():
+    client = initialize_client()
+    
+    open_positions_response = client.private.get_positions(
+        status = POSITION_STATUS_OPEN
+    )
+
+    open_positions = open_positions_response.data.get('positions', [])
+
+    return open_positions
 
 def fetch_account_balance():
     client = initialize_client()
