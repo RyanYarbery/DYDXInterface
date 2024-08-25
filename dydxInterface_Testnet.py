@@ -2,7 +2,7 @@ import time
 import os
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
-from dydx3.constants import MARKET_ETH_USD
+from dydx3.constants import MARKET_ETH_USD   # Ethereum, Bitcoin, XMR
 from dydx3.constants import NETWORK_ID_SEPOLIA
 from dydx3.constants import ORDER_SIDE_BUY, ORDER_SIDE_SELL
 from dydx3.constants import ORDER_TYPE_LIMIT
