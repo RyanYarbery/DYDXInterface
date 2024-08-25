@@ -1,6 +1,7 @@
 import time
 import os
 from decimal import ROUND_DOWN, Decimal
+from decimal import ROUND_DOWN, Decimal
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD   # Ethereum, Bitcoin, XMR
