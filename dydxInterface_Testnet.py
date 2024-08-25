@@ -1,5 +1,6 @@
 import time
 import os
+from decimal import ROUND_DOWN, Decimal
 from dydx3 import Client
 from dydx3.constants import API_HOST_SEPOLIA
 from dydx3.constants import MARKET_ETH_USD   # Ethereum, Bitcoin, XMR
@@ -223,6 +224,35 @@ def place_trailing_stop_order(size, side_input, price, trailing_percent=0.005, m
 
     order_response = client.private.create_order(**order_params)
     return order_response.data
+
+def calculate_new_price(indexPrice, operation='subtract', buffer_value = 2, tickSize_value = 0.1):
+    """
+    Calculates a new price by either subtracting or adding a buffer to the indexPrice,
+    ensuring the result is rounded down to the nearest tick size.
+
+    :param indexPrice: The original price as a numeric value or string for precision.
+    :param buffer_value: The buffer value to adjust the price by to improve fill chance.
+    :param tickSize_value: The tick size to which the new price must be rounded.
+    :param operation: 'subtract' to subtract the buffer, 'add' to add the buffer.
+    :return: The new price, adjusted and rounded as specified.
+    """
+    buffer = Decimal(str(buffer_value))  # Use Decimal for the buffer for precise arithmetic
+    tickSize = Decimal(str(tickSize_value))  # The tick size, also as Decimal for precision
+
+    # Convert indexPrice to Decimal for precise arithmetic
+    indexPrice_decimal = Decimal(str(indexPrice))
+
+    # Calculate the new price with buffer, depending on the operation
+    if operation == 'subtract':
+        new_price = indexPrice_decimal - buffer
+    elif operation == 'add':
+        new_price = indexPrice_decimal + buffer
+    else:
+        raise ValueError("Invalid operation. Use 'add' or 'subtract'.")
+
+    # Round down to nearest tickSize to ensure divisibility and return
+    new_price_rounded = (new_price / tickSize).quantize(Decimal('1.'), rounding=ROUND_DOWN) * tickSize
+    return new_price_rounded
 
 # if __name__ == "__main__":
 #     # Test place_limit_order function
