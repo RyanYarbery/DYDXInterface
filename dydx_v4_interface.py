@@ -6,54 +6,59 @@
 
 import asyncio
 import random
+import os
+import time
+import logging
+from decimal import Decimal
+from decimal import ROUND_DOWN
+from functools import partial
 
-from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
 from v4_proto.dydxprotocol.clob.order_pb2 import Order
 
-from dydx_v4_client.indexer.rest.constants import OrderType
+from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
+from dydx_v4_client.indexer.rest.constants import OrderType, OrderExecution
 from dydx_v4_client.indexer.rest.indexer_client import IndexerClient
-from dydx_v4_client.network import TESTNET
+from dydx_v4_client.network import make_mainnet, make_testnet, make_secure, make_insecure, mainnet_node, testnet_node
 from dydx_v4_client.node.client import NodeClient
-from dydx_v4_client.node.market import Market
+from dydx_v4_client.node.market import Market, since_now
 from dydx_v4_client.wallet import Wallet
-from tests.conftest import DYDX_TEST_MNEMONIC, TEST_ADDRESS
 
-MARKET_ID = "ETH-USD"
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers= [
+                        logging.FileHandler('interface.log'),
+                        logging.StreamHandler()
+                    ])
 
+class DydxInterface:
 
-async def place_market_order(size: float):
-    node = await NodeClient.connect(TESTNET.node)
-    indexer = IndexerClient(TESTNET.rest_indexer)
-
-    market = Market(
-        (await indexer.markets.get_perpetual_markets(MARKET_ID))["markets"][MARKET_ID]
-    )
-    wallet = await Wallet.from_mnemonic(node, DYDX_TEST_MNEMONIC, TEST_ADDRESS)
-
-    order_id = market.order_id(
-        TEST_ADDRESS, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.SHORT_TERM
-    )
-
-    current_block = await node.latest_block_height()
-
-    new_order = market.order(
-        order_id=order_id,
-        order_type=OrderType.MARKET,
-        side=Order.Side.SIDE_SELL,
-        size=size,
-        price=0,  # Recommend set to oracle price - 5% or lower for SELL, oracle price + 5% for BUY
-        time_in_force=Order.TimeInForce.TIME_IN_FORCE_UNSPECIFIED,
-        reduce_only=False,
-        good_til_block=current_block + 10,
-    )
-
-    transaction = await node.place_order(
-        wallet=wallet,
-        order=new_order,
-    )
-
-    print(transaction)
-    wallet.sequence += 1
+    def __init__(self, environment='test'):
+        """
+        Initializes the dYdX v4 client with the environment's API credentials.
+        
+        :param environment: Set to 'main' for mainnet, otherwise defaults to testnet.
+        """
+        self.environment = environment.lower()
+        
+        if self.environment == 'main':
+            self.dydx_address = os.getenv('dydx_address')
+            self.dydx_mnemonic = os.getenv('dydx_mnemonic')
+            self.dydx_subaccount = 0
+            self.net_node = 'mainnet'
+        else:
+            self.dydx_address = os.getenv('dydx_address')
+            self.dydx_mnemonic = os.getenv('dydx_mnemonic')
+            self.dydx_subaccount = 0
+            self.net_node = 'testnet'
 
 
-asyncio.run(place_market_order(0.00001))
+        self.client = Client(
+            network_id=self.network_id,
+            host=self.host,
+            eth_private_key=self.ethereum_private_key,
+            api_key_credentials={
+                'key': self.api_key,
+                'secret': self.api_secret,
+                'passphrase': self.passphrase,
+            },
+        )
