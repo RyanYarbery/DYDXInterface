@@ -38,6 +38,8 @@ class DydxInterface:
         :param environment: Set to 'main' for mainnet, otherwise defaults to testnet.
         """
         self.environment = environment.lower()
+        self.client = None
+
         
         if self.environment == 'main':
             self.dydx_address = os.getenv('dydx_address') # Potential for there to be a different address and mnemonic for main than test
@@ -56,30 +58,15 @@ class DydxInterface:
             self.dydx_address = os.getenv('dydx_address')
             self.dydx_mnemonic = os.getenv('dydx_mnemonic')
             self.NETWORK = TESTNET
-            print('Network:')
-            # #  Could just use TESTNET instead of all of this. Need to see if that can be applied here
-            # self.dydx_subaccount = 0
-            # self.net_node = 'testnet_node'
-            # self.rest_indexer="dydx-testnet.imperator.co"
-            # self.websocket_indexer="wss://indexer.v4testnet.dydx.exchange/v4/ws"
-            # self.node_url="test-dydx-grpc.kingnodes.com"
-
-        # self.NETWORK = partial(
-        #                 make_secure,
-        #                 self.net_node,
-        #                 self.rest_indexer,
-        #                 self.websocket_indexer,
-        #                 self.node_url,
-        #         )
-        self.client = None
-        self._client_task = asyncio.create_task(self._setup_client())  # Start async setup task
+            self.dydx_subaccount = 0
+        
+        self._client_task = asyncio.create_task(self._setup_client())
         
         
-
     async def _setup_client(self):
         """Asynchronous internal client setup method."""
         try:
-            print('Trying to setup client')
+            logging.info("Setting up the client...")
             self.client = IndexerClient(self.NETWORK.rest_indexer)
             logging.info("Client successfully initialized.")
         except Exception as e:
@@ -87,23 +74,51 @@ class DydxInterface:
             self.client = None
 
 
-    async def get_open_orders(self):
+    async def fetch_open_orders(self):
         """Fetch open orders asynchronously."""
         if not self.client:
-            await self._client_task  # Ensure the client setup task is complete
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Client is not initialized. Cannot fetch open orders.")
+            return []
 
         orders = await self.client.account.get_subaccount_orders(
             address=self.dydx_address,
-            subaccount_id=self.dydx_subaccount,
+            subaccount_number=self.dydx_subaccount,
             status="OPEN"
         )
         if not orders:
-            # print("No orders to fetch.")
-            logging.info("No orders to fetch")
+            logging.info("No orders to fetch.")
         return orders
     
-# Ridiculous error that I don't understand
-# Node URL should not contain http(s)://. Stripping the prefix. In the future, consider providing the URL without the http(s) prefix.
+    async def fetch_orders(self):
+        """Fetch orders asynchronously."""
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Client is not initialized. Cannot fetch orders.")
+            return []
+
+        orders = await self.client.account.get_subaccount_orders(
+            address=self.dydx_address,
+            subaccount_number=self.dydx_subaccount,
+        )
+        if not orders:
+            logging.info("No orders to fetch.")
+        return orders
+    
+# Usage Example
+async def main():
+    dydx_interface = DydxInterface(environment='test')
+    await asyncio.sleep(1)  # Allow time for async setup
+    orders = await dydx_interface.fetch_orders()
+    print("Orders:", orders)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+    
 
 # Place Limit Order
 # fetch_order_by_id
