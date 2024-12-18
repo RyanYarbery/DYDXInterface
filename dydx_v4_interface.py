@@ -14,7 +14,7 @@ from functools import partial
 from v4_proto.dydxprotocol.clob.order_pb2 import Order
 
 from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
-from dydx_v4_client.indexer.rest.constants import OrderType, OrderExecution
+from dydx_v4_client.indexer.rest.constants import OrderType, OrderExecution, OrderSide
 from dydx_v4_client.indexer.rest.indexer_client import IndexerClient
 from dydx_v4_client.network import make_mainnet, make_testnet, make_secure, make_insecure, mainnet_node, testnet_node
 from dydx_v4_client.network import TESTNET
@@ -67,19 +67,40 @@ class DydxInterface:
         
         self._client_task = asyncio.create_task(self._setup_client())
         
-        
     async def _setup_client(self):
         """Asynchronous internal client setup method."""
         try:
             logging.info("Setting up the client...")
+            
+            # Initialize the IndexerClient
             self.client = IndexerClient(self.NETWORK.rest_indexer)
+            if not self.client:
+                raise ConnectionError("Failed setting up indexer.")
+
+            # Connect to the node
             self.node = await NodeClient.connect(self.NETWORK.node)
+            if not self.node:
+                raise ConnectionError("Failed to connect to the node.")
+
+            # Initialize the wallet
+            if not self.dydx_mnemonic or not self.dydx_address:
+                raise ValueError("Mnemonic or address is not provided.")
+            
+            self.wallet = await Wallet.from_mnemonic(self.node, self.dydx_mnemonic, self.dydx_address)
+
+            
+            # Get market info
+            self.market = Market(
+                (await self.client.markets.get_perpetual_markets(self.MARKET_ID))["markets"][self.MARKET_ID]
+            )
+
             logging.info("Client successfully initialized.")
+
         except Exception as e:
             logging.error(f"Failed to initialize client: {e}")
             self.client = None
             self.node = None
-
+            self.wallet = None
 
     async def fetch_open_orders(self):
         """Fetch open orders asynchronously."""
@@ -178,7 +199,7 @@ class DydxInterface:
             'freeCollateral': subaccount.get('freeCollateral'),
             'pendingDeposits': subaccount.get('pendingDeposits'),
             'pendingWithdrawals': subaccount.get('pendingWithdrawals'),
-            'quoteBalance': subaccount.get('quoteBalance')
+            'quoteBalance': subaccount.get('quoteBalance') # Doesn't exist
         }
     
     async def fetch_equity(self):
@@ -212,7 +233,7 @@ class DydxInterface:
         return size
     
     async def fetch_eth_price(self):
-        # This only has the oracle price available. Will have to determine whether this is our only option for pulling price.
+        # Fetches oracle price
         """Fetch ethereum price asynchronously."""
         logging.info("Fetching eth price")
         if not self.client:
@@ -227,7 +248,51 @@ class DydxInterface:
         )
         if not market:
             logging.info("No market to fetch.")
-        return market
+        markets = market['markets']
+        eth = markets['ETH-USD']
+        price = float(eth['oraclePrice']) 
+
+        return price # Returns Oracle price Cast to a float
+    
+    ##################### IN PROGRESS #######################
+    async def place_limit_order(self, side_input: str, size: float, price: float):
+        """Placing Limit Order asynchronously."""
+        logging.info(f"Placing limit order: side={side_input}, size={size}, price={price}")
+
+        order_id = self.market.order_id(
+            self.dydx_address, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.SHORT_TERM # Short term, long term, Need to look into that.
+        )
+
+        if side_input.lower() == 'buy':
+            side = Order.Side.SIDE_BUY
+        elif side_input.lower() == 'sell':
+            side = Order.Side.SIDE_SELL
+
+        current_block = await self.node.latest_block_height()
+
+        new_order = self.market.order(
+            order_id=order_id,
+            order_type=OrderType.LIMIT,
+            side=side,
+            size=size,
+            price=price,  # Recommend set to oracle price - 5% or lower for SELL, oracle price + 5% for BUY
+            time_in_force=Order.TimeInForce.TIME_IN_FORCE_UNSPECIFIED,
+            reduce_only=False,
+            good_til_block=current_block + 10, # How many blocks do we want?
+            )
+        
+        transaction = await self.node.place_order(
+            wallet=self.wallet,
+            order=new_order,
+        )
+
+        self.wallet.sequence += 1
+            
+        return transaction
+    
+    # Close Position
+    # Cancel ORder
+    # Close all positions and cancel all orders
     
 # Usage Example
 async def main():
@@ -237,13 +302,18 @@ async def main():
     # print('Position: ', position)
     # size = await dydx_interface.fetch_position_size()
     # print("Position Size:", size)
+    # price = await dydx_interface.fetch_eth_price()
+    # print("ETH Price: ", price)
+    ## account_info = await dydx_interface.fetch_account()
+    # print("Account Info: ", account_info)
     price = await dydx_interface.fetch_eth_price()
-    print("ETH Price: ", price)
+    price = (price + (price * 0.01))
+    order = await dydx_interface.place_limit_order('Sell', .01, price)
+    print('Order: ', order)
 
 if __name__ == "__main__":
     asyncio.run(main())
     
-
 # Place Limit Order
 # fetch_order_by_id
 # fetch_positions
@@ -259,4 +329,3 @@ if __name__ == "__main__":
 # place_trailing_stop_order
 # calculate_new_price
 # clear_existing_orders_and_positions
-# 
