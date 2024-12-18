@@ -20,6 +20,7 @@ from dydx_v4_client.network import make_mainnet, make_testnet, make_secure, make
 from dydx_v4_client.network import TESTNET
 from dydx_v4_client.node.client import NodeClient
 from dydx_v4_client.node.market import Market, since_now
+from dydx_v4_client.node.message import cancel_order, batch_cancel, OrderBatch
 from dydx_v4_client.wallet import Wallet
 
 MARKET_ID = "ETH-USD"
@@ -43,6 +44,7 @@ class DydxInterface:
         self.environment = environment.lower()
         self.client = None
         self.MARKET_ID = "ETH-USD"
+        self.clobPairId = 1
 
 
         
@@ -254,14 +256,14 @@ class DydxInterface:
 
         return price # Returns Oracle price Cast to a float
     
-    ##################### IN PROGRESS #######################
     async def place_limit_order(self, side_input: str, size: float, price: float):
         """Placing Limit Order asynchronously."""
         logging.info(f"Placing limit order: side={side_input}, size={size}, price={price}")
 
         order_id = self.market.order_id(
-            self.dydx_address, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.SHORT_TERM # Short term, long term, Need to look into that.
+            self.dydx_address, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.SHORT_TERM # Other options are LONG_TERM or CONDITIONAL
         )
+        # NOTE: Other functions are affected by what we put in the OrderFlags parameter here such as cancelling orders.
 
         if side_input.lower() == 'buy':
             side = Order.Side.SIDE_BUY
@@ -275,10 +277,10 @@ class DydxInterface:
             order_type=OrderType.LIMIT,
             side=side,
             size=size,
-            price=price,  # Recommend set to oracle price - 5% or lower for SELL, oracle price + 5% for BUY
+            price=price,
             time_in_force=Order.TimeInForce.TIME_IN_FORCE_UNSPECIFIED,
             reduce_only=False,
-            good_til_block=current_block + 10, # How many blocks do we want?
+            good_til_block=current_block + 60,
             )
         
         transaction = await self.node.place_order(
@@ -289,11 +291,78 @@ class DydxInterface:
         self.wallet.sequence += 1
             
         return transaction
-    
+
     # Close Position
     # Cancel ORder
     # Close all positions and cancel all orders
     
+
+
+    async def cancel_order(self, order_id):
+        """Cancel order asynchronously."""
+        logging.info(f"Cancelling order with id:{order_id}")
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Node client is not initialized. Cannot cancel order.")
+            return []
+        
+        current_block = await self.node.latest_block_height()
+        if not current_block:
+            logging.error("Could not get current block. Cannot cancel order.")
+            return[]
+        
+        good_til_block = current_block + 60
+
+        response = await self.node.cancel_order(
+            self.wallet,
+            order_id,
+            good_til_block,
+            good_til_block_time=good_til_block_time
+        )
+        if not response:
+            logging.info("Could not cancel order.")
+        return response
+    
+    async def cancell_all_orders(self):
+        """ Cancel ALl Orders asynchronously."""
+        
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Client is not initialized. Cannot cancel orders.")
+            return []
+        
+        logging.info("Getting order ids")
+        orders = await self.fetch_open_orders()
+        if not orders:
+            logging.error("Could't Pull orders")
+
+        client_ids = [order['clientId'] for order in orders]
+
+        short_term_cancels = [OrderBatch(clob_pair_id=self.clobPairId, client_ids=client_ids)]
+
+        current_block = await self.node.latest_block_height()
+        if not current_block:
+            logging.error("Could not get current block. Cannot cancel orders.")
+            return[]
+        
+        good_til_block = current_block + 60
+        
+        logging.info("Cancelling orders")
+
+        response = await self.node.batch_cancel_orders(
+            self.wallet,
+            self.subaccount_id,
+            short_term_cancels,
+            good_til_block
+        )
+        if not response:
+            logging.info(".")
+        return response
+
 # Usage Example
 async def main():
     dydx_interface = DydxInterface(environment='test')
@@ -306,10 +375,16 @@ async def main():
     # print("ETH Price: ", price)
     ## account_info = await dydx_interface.fetch_account()
     # print("Account Info: ", account_info)
-    price = await dydx_interface.fetch_eth_price()
-    price = (price + (price * 0.01))
-    order = await dydx_interface.place_limit_order('Sell', .01, price)
-    print('Order: ', order)
+    # price = await dydx_interface.fetch_eth_price()
+    # price = (price + (price * 0.01))
+    # order = await dydx_interface.place_limit_order('Sell', .01, price)
+    # print('Order: ', order)
+    # orders = await dydx_interface.fetch_open_orders()
+    # print('Orders: ', orders)
+    # client_ids = [order['clientId'] for order in orders]
+    # print('Client IDs: ', client_ids)
+    # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
+    # print('Market info: ', market_info)
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -329,3 +404,4 @@ if __name__ == "__main__":
 # place_trailing_stop_order
 # calculate_new_price
 # clear_existing_orders_and_positions
+
