@@ -12,6 +12,7 @@ from decimal import ROUND_DOWN
 from functools import partial
 
 from v4_proto.dydxprotocol.clob.order_pb2 import Order
+from v4_proto.dydxprotocol.clob.tx_pb2 import OrderBatch
 
 from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
 from dydx_v4_client.indexer.rest.constants import OrderType, OrderExecution, OrderSide
@@ -20,11 +21,8 @@ from dydx_v4_client.network import make_mainnet, make_testnet, make_secure, make
 from dydx_v4_client.network import TESTNET
 from dydx_v4_client.node.client import NodeClient
 from dydx_v4_client.node.market import Market, since_now
-from dydx_v4_client.node.message import cancel_order, batch_cancel, OrderBatch
+from dydx_v4_client.node.message import cancel_order, batch_cancel
 from dydx_v4_client.wallet import Wallet
-
-MARKET_ID = "ETH-USD"
-
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -298,9 +296,9 @@ class DydxInterface:
     
 
 
-    async def cancel_order(self, order_id):
+    async def cancel_order(self, client_id): # ClientId is what is used as order_id.
         """Cancel order asynchronously."""
-        logging.info(f"Cancelling order with id:{order_id}")
+        logging.info(f"Cancelling order with id:{client_id}")
         if not self.client:
             await self._client_task  # Ensure the client setup task completes
 
@@ -308,18 +306,18 @@ class DydxInterface:
             logging.error("Node client is not initialized. Cannot cancel order.")
             return []
         
-        current_block = await self.node.latest_block_height()
-        if not current_block:
-            logging.error("Could not get current block. Cannot cancel order.")
-            return[]
+        # current_block = await self.node.latest_block_height()
+        # if not current_block:
+        #     logging.error("Could not get current block. Cannot cancel order.")
+        #     return[]
         
-        good_til_block = current_block + 60
+        # good_til_block = current_block + 60
 
         response = await self.node.cancel_order(
             self.wallet,
-            order_id,
-            good_til_block,
-            good_til_block_time=good_til_block_time
+            client_id,
+            # good_til_block,
+            # good_til_block_time=good_til_block_time
         )
         if not response:
             logging.info("Could not cancel order.")
@@ -340,9 +338,20 @@ class DydxInterface:
         if not orders:
             logging.error("Could't Pull orders")
 
-        client_ids = [order['clientId'] for order in orders]
+        client_ids = []
+        for order in orders:
+            client_id = order.get('clientId')
+            print("Client ID: ", client_id)
+            if client_id and client_id.isdigit():
+                client_ids.append(int(client_id))
+            else:
+                logging.warning(f"Invalid clientId found: {client_id}")
+        if not client_ids:
+            logging.error("No Valid client IDs found")
 
-        short_term_cancels = [OrderBatch(clob_pair_id=self.clobPairId, client_ids=client_ids)]
+        # client_ids = [int(order['clientId']) for order in orders]
+
+        short_term_cancels = OrderBatch(clob_pair_id=self.clobPairId, client_ids=client_ids)
 
         current_block = await self.node.latest_block_height()
         if not current_block:
@@ -352,11 +361,13 @@ class DydxInterface:
         good_til_block = current_block + 60
         
         logging.info("Cancelling orders")
+        print(f"short_term_cancels: {short_term_cancels}")
+
 
         response = await self.node.batch_cancel_orders(
             self.wallet,
-            self.subaccount_id,
-            short_term_cancels,
+            self.dydx_subaccount,
+            [short_term_cancels],
             good_til_block
         )
         if not response:
@@ -385,6 +396,8 @@ async def main():
     # print('Client IDs: ', client_ids)
     # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
     # print('Market info: ', market_info)
+    response = await dydx_interface.cancell_all_orders()
+    print('Response: ', response)
 
 if __name__ == "__main__":
     asyncio.run(main())

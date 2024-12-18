@@ -212,3 +212,156 @@
 2024-12-18 11:37:53,202 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
 2024-12-18 11:37:53,207 - INFO - Client successfully initialized.
 2024-12-18 11:37:53,391 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 11:52:43,781 - INFO - Setting up the client...
+2024-12-18 11:52:44,782 - INFO - Getting order ids
+2024-12-18 11:52:44,782 - INFO - Fetching open orders
+2024-12-18 11:52:45,336 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 11:52:45,337 - INFO - Client successfully initialized.
+2024-12-18 11:52:47,325 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 11:53:42,388 - INFO - Setting up the client...
+2024-12-18 11:53:43,390 - INFO - Getting order ids
+2024-12-18 11:53:43,390 - INFO - Fetching open orders
+2024-12-18 11:53:44,310 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 11:56:30,965 - INFO - Setting up the client...
+2024-12-18 11:56:31,966 - INFO - Getting order ids
+2024-12-18 11:56:31,966 - INFO - Fetching open orders
+2024-12-18 11:56:32,492 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 11:56:32,492 - INFO - Client successfully initialized.
+2024-12-18 11:56:32,692 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 11:57:01,155 - INFO - Setting up the client...
+2024-12-18 11:57:02,156 - INFO - Getting order ids
+2024-12-18 11:57:02,156 - INFO - Fetching open orders
+2024-12-18 11:57:02,580 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 11:57:02,582 - INFO - Client successfully initialized.
+2024-12-18 11:57:02,898 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:00:20,608 - INFO - Setting up the client...
+2024-12-18 12:00:21,609 - INFO - Getting order ids
+2024-12-18 12:00:21,609 - INFO - Fetching open orders
+2024-12-18 12:00:22,576 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:00:22,579 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:00:22,580 - INFO - Client successfully initialized.
+2024-12-18 12:00:22,581 - INFO - Cancelling orders
+2024-12-18 12:00:53,058 - INFO - Setting up the client...
+2024-12-18 12:00:54,059 - INFO - Getting order ids
+2024-12-18 12:00:54,059 - INFO - Fetching open orders
+2024-12-18 12:00:55,157 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:00:55,159 - INFO - Client successfully initialized.
+2024-12-18 12:00:55,908 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:00:55,909 - INFO - Cancelling orders
+2024-12-18 12:02:07,483 - INFO - Setting up the client...
+2024-12-18 12:02:08,484 - INFO - Getting order ids
+2024-12-18 12:02:08,484 - INFO - Fetching open orders
+2024-12-18 12:02:08,979 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:02:08,981 - INFO - Client successfully initialized.
+2024-12-18 12:02:09,202 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:02:09,835 - INFO - Cancelling orders
+2024-12-18 12:03:08,177 - INFO - Setting up the client...
+2024-12-18 12:03:09,178 - INFO - Getting order ids
+2024-12-18 12:03:09,178 - INFO - Fetching open orders
+2024-12-18 12:03:09,789 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:03:09,791 - INFO - Client successfully initialized.
+2024-12-18 12:03:09,844 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:03:10,492 - INFO - Cancelling orders
+2024-12-18 12:06:37,493 - INFO - Setting up the client...
+2024-12-18 12:06:38,494 - INFO - Getting order ids
+2024-12-18 12:06:38,494 - INFO - Fetching open orders
+2024-12-18 12:06:39,079 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:06:39,080 - INFO - Client successfully initialized.
+2024-12-18 12:06:39,172 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:06:39,823 - INFO - Cancelling orders
+2024-12-18 12:07:45,361 - INFO - Setting up the client...
+2024-12-18 12:07:46,362 - INFO - Getting order ids
+2024-12-18 12:07:46,363 - INFO - Fetching open orders
+2024-12-18 12:07:46,920 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:07:46,925 - INFO - Client successfully initialized.
+2024-12-18 12:07:47,123 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:07:47,781 - INFO - Cancelling orders
+2024-12-18 12:07:54,908 - INFO - Setting up the client...
+2024-12-18 12:07:55,908 - INFO - Getting order ids
+2024-12-18 12:07:55,908 - INFO - Fetching open orders
+2024-12-18 12:07:56,374 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:07:56,376 - INFO - Client successfully initialized.
+2024-12-18 12:07:56,682 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:07:57,336 - INFO - Cancelling orders
+2024-12-18 12:09:49,316 - INFO - Setting up the client...
+2024-12-18 12:09:50,316 - INFO - Getting order ids
+2024-12-18 12:09:50,317 - INFO - Fetching open orders
+2024-12-18 12:09:50,924 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:09:50,926 - INFO - Client successfully initialized.
+2024-12-18 12:09:50,929 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:09:51,597 - INFO - Cancelling orders
+2024-12-18 12:10:49,984 - INFO - Setting up the client...
+2024-12-18 12:11:04,355 - INFO - Setting up the client...
+2024-12-18 12:11:05,356 - INFO - Fetching open orders
+2024-12-18 12:11:05,725 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:11:05,727 - INFO - Client successfully initialized.
+2024-12-18 12:11:06,059 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:11:06,060 - INFO - Getting order ids
+2024-12-18 12:11:06,060 - INFO - Fetching open orders
+2024-12-18 12:11:06,792 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:11:07,227 - INFO - Cancelling orders
+2024-12-18 12:13:24,880 - INFO - Setting up the client...
+2024-12-18 12:13:25,880 - INFO - Fetching open orders
+2024-12-18 12:13:26,792 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:13:26,795 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:13:26,796 - INFO - Getting order ids
+2024-12-18 12:13:26,796 - INFO - Fetching open orders
+2024-12-18 12:13:26,822 - INFO - Client successfully initialized.
+2024-12-18 12:13:27,658 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:13:28,322 - INFO - Cancelling orders
+2024-12-18 12:17:10,606 - INFO - Setting up the client...
+2024-12-18 12:17:11,606 - INFO - Fetching open orders
+2024-12-18 12:17:12,249 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:17:12,250 - INFO - Client successfully initialized.
+2024-12-18 12:17:12,461 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:17:12,462 - INFO - Getting order ids
+2024-12-18 12:17:12,463 - INFO - Fetching open orders
+2024-12-18 12:17:13,206 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:17:13,811 - INFO - Cancelling orders
+2024-12-18 12:24:05,017 - INFO - Setting up the client...
+2024-12-18 12:24:06,018 - INFO - Fetching open orders
+2024-12-18 12:24:06,690 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:24:06,692 - INFO - Client successfully initialized.
+2024-12-18 12:24:06,786 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:24:06,787 - INFO - Getting order ids
+2024-12-18 12:24:06,787 - INFO - Fetching open orders
+2024-12-18 12:24:08,874 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:24:09,662 - INFO - Cancelling orders
+2024-12-18 12:26:48,375 - INFO - Setting up the client...
+2024-12-18 12:26:49,376 - INFO - Fetching open orders
+2024-12-18 12:26:50,010 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:26:50,011 - INFO - Client successfully initialized.
+2024-12-18 12:26:50,020 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:26:50,020 - INFO - Getting order ids
+2024-12-18 12:26:50,020 - INFO - Fetching open orders
+2024-12-18 12:26:50,728 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:27:03,725 - INFO - Setting up the client...
+2024-12-18 12:27:04,726 - INFO - Fetching open orders
+2024-12-18 12:27:05,171 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:27:05,173 - INFO - Client successfully initialized.
+2024-12-18 12:27:05,406 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:27:05,408 - INFO - Getting order ids
+2024-12-18 12:27:05,408 - INFO - Fetching open orders
+2024-12-18 12:27:06,402 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:27:06,916 - INFO - Cancelling orders
+2024-12-18 12:30:49,093 - INFO - Setting up the client...
+2024-12-18 12:30:50,094 - INFO - Fetching open orders
+2024-12-18 12:30:50,642 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:30:50,643 - INFO - Client successfully initialized.
+2024-12-18 12:30:50,982 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:30:50,984 - INFO - Getting order ids
+2024-12-18 12:30:50,984 - INFO - Fetching open orders
+2024-12-18 12:30:51,785 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:30:52,351 - INFO - Cancelling orders
+2024-12-18 12:36:46,534 - INFO - Setting up the client...
+2024-12-18 12:36:47,534 - INFO - Getting order ids
+2024-12-18 12:36:47,534 - INFO - Fetching open orders
+2024-12-18 12:36:48,118 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-18 12:36:48,123 - INFO - Client successfully initialized.
+2024-12-18 12:36:48,755 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:36:49,266 - INFO - Cancelling orders
+2024-12-18 12:38:11,302 - INFO - Setting up the client...
+2024-12-18 12:38:12,303 - INFO - Getting order ids
+2024-12-18 12:38:12,303 - INFO - Fetching open orders
+2024-12-18 12:38:13,133 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-18 12:38:13,580 - INFO - Cancelling orders
