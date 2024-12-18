@@ -21,3 +21,101 @@
 2024-12-17 09:49:52,115 - INFO - Setting up the client...
 2024-12-17 09:49:52,115 - INFO - Client successfully initialized.
 2024-12-17 09:49:54,107 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL "HTTP/1.1 200 OK"
+2024-12-17 10:21:54,741 - INFO - Setting up the client...
+2024-12-17 10:21:54,742 - INFO - Client successfully initialized.
+2024-12-17 10:21:56,806 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/assetPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0 "HTTP/1.1 200 OK"
+2024-12-17 10:23:25,839 - INFO - Setting up the client...
+2024-12-17 10:23:25,839 - INFO - Client successfully initialized.
+2024-12-17 10:23:27,645 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0 "HTTP/1.1 200 OK"
+2024-12-17 10:28:29,079 - INFO - Setting up the client...
+2024-12-17 10:28:29,079 - INFO - Client successfully initialized.
+2024-12-17 10:28:30,765 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0 "HTTP/1.1 200 OK"
+2024-12-17 10:29:18,582 - INFO - Setting up the client...
+2024-12-17 10:29:18,582 - INFO - Client successfully initialized.
+2024-12-17 10:29:32,673 - INFO - Setting up the client...
+2024-12-17 10:29:32,673 - INFO - Client successfully initialized.
+2024-12-17 10:29:34,321 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/fills?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL "HTTP/1.1 200 OK"
+2024-12-17 10:34:51,467 - INFO - Setting up the client...
+2024-12-17 10:34:51,467 - INFO - Client successfully initialized.
+2024-12-17 10:34:53,318 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 10:36:35,584 - INFO - Setting up the client...
+2024-12-17 10:36:35,584 - INFO - Client successfully initialized.
+2024-12-17 10:36:37,653 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 10:39:30,034 - INFO - Setting up the client...
+2024-12-17 10:39:30,034 - INFO - Client successfully initialized.
+2024-12-17 10:39:33,267 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 10:58:41,994 - INFO - Setting up the client...
+2024-12-17 10:58:41,994 - INFO - Client successfully initialized.
+2024-12-17 10:58:44,775 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 10:59:14,734 - INFO - Setting up the client...
+2024-12-17 10:59:14,734 - INFO - Client successfully initialized.
+2024-12-17 10:59:16,601 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 10:59:23,695 - INFO - Setting up the client...
+2024-12-17 10:59:23,695 - INFO - Client successfully initialized.
+2024-12-17 10:59:25,415 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-17 15:37:38,739 - INFO - Setting up the client...
+2024-12-17 15:37:38,739 - INFO - Client successfully initialized.
+2024-12-17 15:37:40,622 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:41:59,591 - INFO - Setting up the client...
+2024-12-17 15:41:59,591 - INFO - Client successfully initialized.
+2024-12-17 15:42:00,592 - INFO - Fetching position size
+2024-12-17 15:42:43,241 - INFO - Setting up the client...
+2024-12-17 15:42:43,241 - INFO - Client successfully initialized.
+2024-12-17 15:42:44,243 - INFO - Fetching position size
+2024-12-17 15:42:44,243 - INFO - Fetching open positions
+2024-12-17 15:42:45,116 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:47:48,402 - INFO - Setting up the client...
+2024-12-17 15:47:48,402 - INFO - Client successfully initialized.
+2024-12-17 15:47:49,403 - INFO - Fetching open positions
+2024-12-17 15:47:50,239 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:48:15,255 - INFO - Setting up the client...
+2024-12-17 15:48:15,255 - INFO - Client successfully initialized.
+2024-12-17 15:48:16,257 - INFO - Fetching open positions
+2024-12-17 15:48:17,379 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:49:36,721 - INFO - Setting up the client...
+2024-12-17 15:49:36,721 - INFO - Client successfully initialized.
+2024-12-17 15:49:37,722 - INFO - Fetching open positions
+2024-12-17 15:49:38,665 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:50:08,097 - INFO - Setting up the client...
+2024-12-17 15:50:08,097 - INFO - Client successfully initialized.
+2024-12-17 15:50:09,098 - INFO - Fetching open positions
+2024-12-17 15:50:10,944 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:50:40,722 - INFO - Setting up the client...
+2024-12-17 15:50:40,722 - INFO - Client successfully initialized.
+2024-12-17 15:50:41,723 - INFO - Fetching open positions
+2024-12-17 15:50:42,461 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:51:32,264 - INFO - Setting up the client...
+2024-12-17 15:51:32,265 - INFO - Client successfully initialized.
+2024-12-17 15:51:33,266 - INFO - Fetching open positions
+2024-12-17 15:51:33,934 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:51:54,807 - INFO - Setting up the client...
+2024-12-17 15:51:54,807 - INFO - Client successfully initialized.
+2024-12-17 15:51:55,809 - INFO - Fetching open positions
+2024-12-17 15:51:56,627 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:52:20,875 - INFO - Setting up the client...
+2024-12-17 15:52:20,875 - INFO - Client successfully initialized.
+2024-12-17 15:52:21,876 - INFO - Fetching position size
+2024-12-17 15:52:21,876 - INFO - Fetching open positions
+2024-12-17 15:52:22,587 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:53:23,979 - INFO - Setting up the client...
+2024-12-17 15:53:23,979 - INFO - Client successfully initialized.
+2024-12-17 15:53:24,980 - INFO - Fetching position size
+2024-12-17 15:53:24,980 - INFO - Fetching open positions
+2024-12-17 15:53:25,849 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:53:41,625 - INFO - Setting up the client...
+2024-12-17 15:53:41,625 - INFO - Client successfully initialized.
+2024-12-17 15:53:42,626 - INFO - Fetching position size
+2024-12-17 15:53:42,626 - INFO - Fetching open positions
+2024-12-17 15:53:45,422 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 15:53:53,207 - INFO - Setting up the client...
+2024-12-17 15:53:53,207 - INFO - Client successfully initialized.
+2024-12-17 15:53:54,209 - INFO - Fetching open positions
+2024-12-17 15:53:55,014 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-17 16:23:04,105 - INFO - Setting up the client...
+2024-12-17 16:23:04,106 - INFO - Client successfully initialized.
+2024-12-17 16:23:05,107 - INFO - Fetching eth price
+2024-12-17 16:23:05,993 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH "HTTP/1.1 400 Bad Request"
+2024-12-17 16:25:27,028 - INFO - Setting up the client...
+2024-12-17 16:25:27,028 - INFO - Client successfully initialized.
+2024-12-17 16:25:28,029 - INFO - Fetching eth price
+2024-12-17 16:25:28,732 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
