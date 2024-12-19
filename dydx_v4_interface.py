@@ -10,8 +10,10 @@ import logging
 from decimal import Decimal
 from decimal import ROUND_DOWN
 from functools import partial
+import datetime
 
-from v4_proto.dydxprotocol.clob.order_pb2 import Order
+from v4_proto.dydxprotocol.clob.order_pb2 import Order, OrderId
+from v4_proto.dydxprotocol.subaccounts.subaccount_pb2 import SubaccountId
 from v4_proto.dydxprotocol.clob.tx_pb2 import OrderBatch
 
 from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
@@ -290,15 +292,10 @@ class DydxInterface:
             
         return transaction
 
-    # Close Position
-    # Cancel ORder
-    # Close all positions and cancel all orders
-    
-
-
-    async def cancel_order(self, client_id): # ClientId is what is used as order_id.
+    # Will make this work if it is ever necessary
+    async def cancel_order(self, ): 
         """Cancel order asynchronously."""
-        logging.info(f"Cancelling order with id:{client_id}")
+        # logging.info(f"Cancelling order with id:{client_id}")
         if not self.client:
             await self._client_task  # Ensure the client setup task completes
 
@@ -306,16 +303,16 @@ class DydxInterface:
             logging.error("Node client is not initialized. Cannot cancel order.")
             return []
         
-        # current_block = await self.node.latest_block_height()
-        # if not current_block:
-        #     logging.error("Could not get current block. Cannot cancel order.")
-        #     return[]
+        current_block = await self.node.latest_block_height()
+        if not current_block:
+            logging.error("Could not get current block. Cannot cancel order.")
+            return[]
         
-        # good_til_block = current_block + 60
+        good_til_block = current_block + 60
 
         response = await self.node.cancel_order(
             self.wallet,
-            client_id,
+            '2f242d9c-4ec4-5f5d-a54b-dc9482819de1',
             # good_til_block,
             # good_til_block_time=good_til_block_time
         )
@@ -323,7 +320,7 @@ class DydxInterface:
             logging.info("Could not cancel order.")
         return response
     
-    async def cancell_all_orders(self):
+    async def FAILED_cancel_all_orders(self):
         """ Cancel ALl Orders asynchronously."""
         
         if not self.client:
@@ -338,18 +335,18 @@ class DydxInterface:
         if not orders:
             logging.error("Could't Pull orders")
 
-        client_ids = []
-        for order in orders:
-            client_id = order.get('clientId')
-            print("Client ID: ", client_id)
-            if client_id and client_id.isdigit():
-                client_ids.append(int(client_id))
-            else:
-                logging.warning(f"Invalid clientId found: {client_id}")
-        if not client_ids:
-            logging.error("No Valid client IDs found")
+        # client_ids = []
+        # for order in orders:
+        #     client_id = order.get('clientId')
+        #     print("Client ID: ", client_id)
+        #     if client_id and client_id.isdigit():
+        #         client_ids.append(int(client_id))
+        #     else:
+        #         logging.warning(f"Invalid clientId found: {client_id}")
+        # if not client_ids:
+        #     logging.error("No Valid client IDs found")
 
-        # client_ids = [int(order['clientId']) for order in orders]
+        client_ids = [int(order['clientId']) for order in orders]
 
         short_term_cancels = OrderBatch(clob_pair_id=self.clobPairId, client_ids=client_ids)
 
@@ -373,6 +370,108 @@ class DydxInterface:
         if not response:
             logging.info(".")
         return response
+    
+    async def cancel_all_orders(self):
+        """Cancel all orders asynchronously."""
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Node client is not initialized. Cannot cancel orders.")
+            return []
+
+        logging.info("Getting order ids")
+        orders = await self.fetch_open_orders()
+        if not orders:
+            logging.error("Couldn't pull orders")
+            return []
+
+        print('Order: ', orders)
+
+        order_ids = []
+        for order in orders:
+            try:
+                subaccount_id = SubaccountId(
+                    owner=self.dydx_address,
+                    number=order["subaccountNumber"]
+                )
+                order_id = OrderId(
+                    subaccount_id=subaccount_id,
+                    client_id=int(order["clientId"]),
+                    order_flags=int(order["orderFlags"]),
+                    clob_pair_id=int(order["clobPairId"])
+                )
+                order_ids.append({
+                    "order_id": order_id,
+                    "goodTilBlockTime": int(
+                        datetime.datetime.fromisoformat(order["goodTilBlockTime"].replace("Z", "+00:00")).timestamp()
+                    ),
+                })
+                logging.info(f"Extracted OrderId: {order_id}")
+            except Exception as e:
+                logging.error(f"Error processing order: {order}. Error: {e}")
+
+        current_block = await self.node.latest_block_height()
+        if not current_block:
+            logging.error("Could not get current block. Cannot cancel orders.")
+            return []
+
+        good_til_block = current_block + 60
+
+        # Loop through order IDs and cancel each order
+        responses = []
+        for order in order_ids:
+            order_id = order["order_id"]
+            good_til_block_time = order["goodTilBlockTime"]
+            print('Wallet sequence pre increment: ', self.wallet.sequence)
+            # Small delay to account for network propagation
+            await asyncio.sleep(2)
+
+            try:
+                logging.info(f"Cancelling order with OrderId: {order_id}")
+                response = await self.node.cancel_order(
+                    self.wallet,
+                    order_id,
+                    good_til_block,
+                    good_til_block_time
+                )
+                responses.append(response)
+                logging.info(f"Successfully cancelled order with OrderId: {order_id}")
+                
+                # Increment wallet sequence manually
+                self.wallet.sequence += 1
+                print('Wallet sequence post increment: ', self.wallet.sequence)
+
+
+            except Exception as e:
+                if "account sequence mismatch" in str(e):
+                    # Update wallet.sequence and retry
+                    logging.warning("Sequence mismatch detected. Retrying with updated sequence.")
+                    latest_account_info = await self.client.account.get_subaccount(
+                        address=self.dydx_address,
+                        subaccount_number=0
+                    )
+                    self.wallet.sequence = latest_account_info["subaccount"]["sequence"]
+                    try:
+                        response = await self.node.cancel_order(
+                            self.wallet,
+                            order_id,
+                            good_til_block,
+                            good_til_block_time
+                        )
+                        responses.append(response)
+                        logging.info(f"Successfully retried cancellation for OrderId: {order_id}")
+                    except Exception as retry_error:
+                        logging.error(f"Retry failed for OrderId: {order_id}. Error: {retry_error}")
+                else:
+                    logging.error(f"Failed to cancel order with OrderId: {order_id}. Error: {e}")
+
+        return responses
+
+      # Close Position
+    # Close all positions and cancel all orders
+    async def close_position(self):
+
 
 # Usage Example
 async def main():
@@ -396,8 +495,10 @@ async def main():
     # print('Client IDs: ', client_ids)
     # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
     # print('Market info: ', market_info)
-    response = await dydx_interface.cancell_all_orders()
+    response = await dydx_interface.cancel_all_orders()
     print('Response: ', response)
+    # response = await dydx_interface.cancel_order()
+    # print('Response: ', response)
 
 if __name__ == "__main__":
     asyncio.run(main())
