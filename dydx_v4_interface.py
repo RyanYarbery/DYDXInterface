@@ -566,8 +566,7 @@ async def main():
     # print('Market info: ', market_info)
     # response = await dydx_interface.cancel_all_orders()
     # print(f'Orders Cancelled = {response}')
-    response = await dydx_interface.close_positions()
-    print(f'Positions Closed = {response}')
+    response = await dydx_interface.clear_existing_orders_and_positions()
    
 
 if __name__ == "__main__":

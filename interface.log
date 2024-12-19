@@ -997,3 +997,65 @@ clob_pair_id: 1
   raw_log: "[]"
 }
 
+2024-12-19 12:53:35,028 - INFO - Setting up the client...
+2024-12-19 12:53:36,030 - INFO - Clearing existing orders and positions
+2024-12-19 12:53:36,030 - INFO - Getting order ids
+2024-12-19 12:53:36,030 - INFO - Fetching open orders
+2024-12-19 12:53:36,762 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-19 12:53:36,763 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-19 12:53:36,763 - INFO - Client successfully initialized.
+2024-12-19 12:53:36,763 - INFO - Extracted OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 2133147147
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:36,763 - INFO - Extracted OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 434031900
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:39,190 - INFO - Cancelling order with OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 2133147147
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:39,732 - INFO - Successfully cancelled order with OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 2133147147
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:41,735 - INFO - Cancelling order with OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 434031900
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:42,449 - INFO - Successfully cancelled order with OrderId: subaccount_id {
+  owner: "dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze"
+}
+client_id: 434031900
+order_flags: 64
+clob_pair_id: 1
+
+2024-12-19 12:53:44,451 - INFO - Closing positions
+2024-12-19 12:53:44,452 - INFO - Fetching open positions
+2024-12-19 12:53:46,893 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-19 12:53:46,894 - INFO - Fetching eth price
+2024-12-19 12:53:47,617 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-19 12:53:47,619 - INFO - Calculating new price from 3364.596025 buffered by add5 and rounding to the 0.1
+2024-12-19 12:53:47,620 - INFO - Price Rounded and buffered from 3364.596025 to 3369.5
+2024-12-19 12:53:47,620 - INFO - Placing limit order: side=buy, size=1, price=3369.5
+2024-12-19 12:53:48,640 - INFO - Order Return: tx_response {
+  txhash: "AE2D03273E3DD5658D40853B098DFAB563B0EF3FDB98007B28574821C3694C2C"
+  raw_log: "[]"
+}
+
