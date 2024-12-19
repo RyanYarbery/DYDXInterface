@@ -159,7 +159,7 @@ class DydxInterface:
         positions = positions.get('positions', [])
         if not positions:
             logging.info("No open positions to fetch.")
-        return positions[0]
+        return positions
     
     async def fetch_fills(self):
         """Fetch orders asynchronously."""
@@ -261,7 +261,7 @@ class DydxInterface:
         logging.info(f"Placing limit order: side={side_input}, size={size}, price={price}")
 
         order_id = self.market.order_id(
-            self.dydx_address, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.SHORT_TERM # Other options are LONG_TERM or CONDITIONAL
+            self.dydx_address, 0, random.randint(0, MAX_CLIENT_ID), OrderFlags.LONG_TERM # Other options are LONG_TERM or CONDITIONAL
         )
         # NOTE: Other functions are affected by what we put in the OrderFlags parameter here such as cancelling orders.
 
@@ -280,7 +280,8 @@ class DydxInterface:
             price=price,
             time_in_force=Order.TimeInForce.TIME_IN_FORCE_UNSPECIFIED,
             reduce_only=False,
-            good_til_block=current_block + 60,
+            good_til_block=current_block + 500,
+            good_til_block_time = since_now(seconds=500)
             )
         
         transaction = await self.node.place_order(
@@ -466,11 +467,79 @@ class DydxInterface:
                 else:
                     logging.error(f"Failed to cancel order with OrderId: {order_id}. Error: {e}")
 
-        return responses
+        # await asyncio.sleep(2)
 
-      # Close Position
-    # Close all positions and cancel all orders
-    async def close_position(self):
+        # orders = await self.fetch_open_orders()
+        # print('Orders pos deletion: ', orders)
+        # if not orders:
+        #     cancelled = True
+
+        # return cancelled
+        return None
+    
+    async def close_positions(self):
+        """Close positions asynchronously."""
+
+        logging.info("Closing positions")
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Client is not initialized. Cannot fetch positions.")
+            return []
+        
+
+        open_positions = await self.fetch_open_positions()
+
+        for position in open_positions:
+            
+            side = position['side']
+            size = abs(Decimal(position['size']))
+
+            if side == 'LONG':
+                side = 'sell'
+                operation = 'subtract'
+            elif side == 'SHORT':
+                side = 'buy'
+                operation = 'add'
+
+            oracle_price = await self.fetch_eth_price()
+            price = self.calculate_new_price(oracle_price, operation)
+            close_position_order = await self.place_limit_order(side, size, price)
+            logging.info("Order Return: %s", close_position_order)
+
+        return None
+    
+    def calculate_new_price(self, oraclePrice, operation='subtract', buffer_value=5, tickSize_value=0.1):
+        logging.info(f"Calculating new price from {oraclePrice} buffered by {operation}{buffer_value} and rounding to the {tickSize_value}")
+        buffer = Decimal(str(buffer_value))
+        tickSize = Decimal(str(tickSize_value))
+        indexPrice_decimal = Decimal(str(oraclePrice))
+
+        if operation == 'subtract':
+            new_price = indexPrice_decimal - buffer
+        elif operation == 'add':
+            new_price = indexPrice_decimal + buffer
+        else:
+            raise ValueError("Invalid operation. Use 'add' or 'subtract'.")
+
+        new_price_rounded = (new_price / tickSize).quantize(Decimal('1.'), rounding=ROUND_DOWN) * tickSize
+        logging.info(f"Price Rounded and buffered from {indexPrice_decimal} to {new_price_rounded}")
+        return new_price_rounded
+    
+    async def clear_existing_orders_and_positions(self):
+        logging.info("Clearing existing orders and positions")
+
+        await self.cancel_all_orders()
+
+        await asyncio.sleep(2)
+
+        await self.close_positions()
+
+        return None 
+    
+
+
 
 
 # Usage Example
@@ -495,10 +564,11 @@ async def main():
     # print('Client IDs: ', client_ids)
     # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
     # print('Market info: ', market_info)
-    response = await dydx_interface.cancel_all_orders()
-    print('Response: ', response)
-    # response = await dydx_interface.cancel_order()
-    # print('Response: ', response)
+    # response = await dydx_interface.cancel_all_orders()
+    # print(f'Orders Cancelled = {response}')
+    response = await dydx_interface.close_positions()
+    print(f'Positions Closed = {response}')
+   
 
 if __name__ == "__main__":
     asyncio.run(main())
