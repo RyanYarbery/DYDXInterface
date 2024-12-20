@@ -1128,3 +1128,40 @@ clob_pair_id: 1
 2024-12-20 10:12:56,532 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
 2024-12-20 10:12:56,535 - INFO - Client successfully initialized.
 2024-12-20 10:12:56,748 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-20 10:18:45,264 - INFO - Setting up the client...
+2024-12-20 10:18:46,265 - INFO - Clearing existing orders and positions
+2024-12-20 10:18:46,265 - INFO - Getting order ids
+2024-12-20 10:18:46,265 - INFO - Fetching open orders
+2024-12-20 10:18:47,034 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-20 10:18:47,035 - INFO - No orders to fetch.
+2024-12-20 10:18:47,035 - ERROR - Couldn't pull orders
+2024-12-20 10:18:49,038 - INFO - Closing positions
+2024-12-20 10:18:49,038 - INFO - Fetching open positions
+2024-12-20 10:18:49,983 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-20 10:18:49,984 - INFO - Fetching eth price
+2024-12-20 10:18:50,720 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 10:18:50,722 - INFO - Calculating new price from 3423.819829 buffered by add5 and rounding to the 0.1
+2024-12-20 10:18:50,722 - INFO - Price Rounded and buffered from 3423.819829 to 3428.8
+2024-12-20 10:18:50,723 - INFO - Placing limit order: side=buy, size=0.288, price=3428.8
+2024-12-20 10:19:21,943 - INFO - Setting up the client...
+2024-12-20 10:19:22,944 - INFO - Clearing existing orders and positions
+2024-12-20 10:19:22,944 - INFO - Getting order ids
+2024-12-20 10:19:22,944 - INFO - Fetching open orders
+2024-12-20 10:19:23,483 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 10:19:23,484 - INFO - Client successfully initialized.
+2024-12-20 10:19:23,674 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/orders?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&tickerType=PERPETUAL&status=OPEN "HTTP/1.1 200 OK"
+2024-12-20 10:19:23,676 - INFO - No orders to fetch.
+2024-12-20 10:19:23,676 - ERROR - Couldn't pull orders
+2024-12-20 10:19:25,677 - INFO - Closing positions
+2024-12-20 10:19:25,677 - INFO - Fetching open positions
+2024-12-20 10:19:26,469 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualPositions?address=dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze&subaccountNumber=0&status=OPEN "HTTP/1.1 200 OK"
+2024-12-20 10:19:26,471 - INFO - Fetching eth price
+2024-12-20 10:19:27,285 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 10:19:27,287 - INFO - Calculating new price from 3428.275665 buffered by add5 and rounding to the 0.1
+2024-12-20 10:19:27,287 - INFO - Price Rounded and buffered from 3428.275665 to 3433.2
+2024-12-20 10:19:27,287 - INFO - Placing limit order: side=buy, size=0.288, price=3433.2
+2024-12-20 10:19:28,719 - INFO - Order Return: tx_response {
+  txhash: "9BC8E54725604B73EE00714E9B02A5CD6C8D11D2A044F9D737BFA1044140EEB4"
+  raw_log: "[]"
+}
+
