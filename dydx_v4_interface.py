@@ -570,7 +570,7 @@ async def main():
     # print('Market info: ', market_info)
     # response = await dydx_interface.cancel_all_orders()
     # print(f'Orders Cancelled = {response}')
-    response = await dydx_interface.clear_existing_orders_and_positions()
+    # response = await dydx_interface.clear_existing_orders_and_positions()
     # free_collateral = await dydx_interface.fetch_free_collateral()
     # print("Free collateral: ", free_collateral)
    
