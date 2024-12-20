@@ -546,10 +546,6 @@ class DydxInterface:
 
         return None 
     
-
-
-
-
 # Usage Example
 async def main():
     dydx_interface = DydxInterface(environment='test')
