@@ -194,7 +194,7 @@ class DydxInterface:
         if not account_info:
             logging.info("No account info to fetch.")
         subaccount = account_info.get('subaccount', {})
-        print('Account info: ', subaccount)
+        # print('Account info: ', subaccount)
         return {
             'equity': subaccount.get('equity'),
             'freeCollateral': subaccount.get('freeCollateral'),
@@ -218,6 +218,25 @@ class DydxInterface:
             logging.info("No equity to fetch.")
         subaccount = equity.get('subaccount', {})
         return subaccount.get('equity')
+    
+    async def fetch_free_collateral(self):
+        """Fetch free collateral asynchronously."""
+        logging.info("Fetching free collateral")
+        if not self.client:
+            await self._client_task  # Ensure the client setup task completes
+
+        if not self.client:
+            logging.error("Client is not initialized. Cannot fetch free collateral.")
+            return []
+
+        free_collateral = await self.client.account.get_subaccount(
+            address=self.dydx_address,
+            subaccount_number=self.dydx_subaccount,
+        )
+        if not free_collateral:
+            logging.info("No free collateral to fetch.")
+        subaccount = free_collateral.get('subaccount', {})
+        return subaccount.get('freeCollateral')
 
     async def fetch_position_size(self):
         # Assuming that we are operating with one open position at all times
@@ -548,8 +567,8 @@ async def main():
     # print("Position Size:", size)
     # price = await dydx_interface.fetch_eth_price()
     # print("ETH Price: ", price)
-    account_info = await dydx_interface.fetch_account()
-    print("Account Info: ", account_info)
+    # account_info = await dydx_interface.fetch_account()
+    # print("Account Info: ", account_info)
     # price = await dydx_interface.fetch_eth_price()
     # price = (price + (price * 0.01))
     # order = await dydx_interface.place_limit_order('Sell', .01, price)
@@ -563,6 +582,8 @@ async def main():
     # response = await dydx_interface.cancel_all_orders()
     # print(f'Orders Cancelled = {response}')
     # response = await dydx_interface.clear_existing_orders_and_positions()
+    free_collateral = await dydx_interface.fetch_free_collateral()
+    print("Free collateral: ", free_collateral)
    
 
 if __name__ == "__main__":

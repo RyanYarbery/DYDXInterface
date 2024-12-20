@@ -1113,3 +1113,18 @@ clob_pair_id: 1
 2024-12-20 09:55:04,293 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
 2024-12-20 09:55:04,295 - INFO - Client successfully initialized.
 2024-12-20 09:55:04,313 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-20 09:59:18,829 - INFO - Setting up the client...
+2024-12-20 09:59:19,830 - INFO - Fetching account info
+2024-12-20 09:59:20,848 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 09:59:20,849 - INFO - Client successfully initialized.
+2024-12-20 09:59:22,447 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-20 10:04:03,573 - INFO - Setting up the client...
+2024-12-20 10:04:04,573 - INFO - Fetching account info
+2024-12-20 10:04:05,063 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 10:04:05,066 - INFO - Client successfully initialized.
+2024-12-20 10:04:05,266 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
+2024-12-20 10:12:54,931 - INFO - Setting up the client...
+2024-12-20 10:12:55,931 - INFO - Fetching free collateral
+2024-12-20 10:12:56,532 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/perpetualMarkets?ticker=ETH-USD "HTTP/1.1 200 OK"
+2024-12-20 10:12:56,535 - INFO - Client successfully initialized.
+2024-12-20 10:12:56,748 - INFO - HTTP Request: GET https://indexer.v4testnet.dydx.exchange/v4/addresses/dydx1k6a3s2c8ggvs4200pyk74a9h0rdz8l7ds245ze/subaccountNumber/0 "HTTP/1.1 200 OK"
