@@ -46,8 +46,6 @@ class DydxInterface:
         self.MARKET_ID = "ETH-USD"
         self.clobPairId = 1
 
-
-        
         if self.environment == 'main':
             self.dydx_address = os.getenv('dydx_address') # Potential for there to be a different address and mnemonic for main than test
             self.dydx_mnemonic = os.getenv('dydx_mnemonic')
@@ -196,12 +194,10 @@ class DydxInterface:
         if not account_info:
             logging.info("No account info to fetch.")
         subaccount = account_info.get('subaccount', {})
+        print('Account info: ', subaccount)
         return {
             'equity': subaccount.get('equity'),
             'freeCollateral': subaccount.get('freeCollateral'),
-            'pendingDeposits': subaccount.get('pendingDeposits'),
-            'pendingWithdrawals': subaccount.get('pendingWithdrawals'),
-            'quoteBalance': subaccount.get('quoteBalance') # Doesn't exist
         }
     
     async def fetch_equity(self):
@@ -552,8 +548,8 @@ async def main():
     # print("Position Size:", size)
     # price = await dydx_interface.fetch_eth_price()
     # print("ETH Price: ", price)
-    ## account_info = await dydx_interface.fetch_account()
-    # print("Account Info: ", account_info)
+    account_info = await dydx_interface.fetch_account()
+    print("Account Info: ", account_info)
     # price = await dydx_interface.fetch_eth_price()
     # price = (price + (price * 0.01))
     # order = await dydx_interface.place_limit_order('Sell', .01, price)
@@ -566,7 +562,7 @@ async def main():
     # print('Market info: ', market_info)
     # response = await dydx_interface.cancel_all_orders()
     # print(f'Orders Cancelled = {response}')
-    response = await dydx_interface.clear_existing_orders_and_positions()
+    # response = await dydx_interface.clear_existing_orders_and_positions()
    
 
 if __name__ == "__main__":
