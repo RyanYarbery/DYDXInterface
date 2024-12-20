@@ -5,11 +5,9 @@
 import asyncio
 import random
 import os
-import time
 import logging
 from decimal import Decimal
 from decimal import ROUND_DOWN
-from functools import partial
 import datetime
 
 from v4_proto.dydxprotocol.clob.order_pb2 import Order, OrderId
@@ -17,13 +15,12 @@ from v4_proto.dydxprotocol.subaccounts.subaccount_pb2 import SubaccountId
 from v4_proto.dydxprotocol.clob.tx_pb2 import OrderBatch
 
 from dydx_v4_client import MAX_CLIENT_ID, OrderFlags
-from dydx_v4_client.indexer.rest.constants import OrderType, OrderExecution, OrderSide
+from dydx_v4_client.indexer.rest.constants import OrderType
 from dydx_v4_client.indexer.rest.indexer_client import IndexerClient
-from dydx_v4_client.network import make_mainnet, make_testnet, make_secure, make_insecure, mainnet_node, testnet_node
+from dydx_v4_client.network import make_mainnet
 from dydx_v4_client.network import TESTNET
 from dydx_v4_client.node.client import NodeClient
 from dydx_v4_client.node.market import Market, since_now
-from dydx_v4_client.node.message import cancel_order, batch_cancel
 from dydx_v4_client.wallet import Wallet
 
 logging.basicConfig(level=logging.INFO,
@@ -88,7 +85,6 @@ class DydxInterface:
             
             self.wallet = await Wallet.from_mnemonic(self.node, self.dydx_mnemonic, self.dydx_address)
 
-            
             # Get market info
             self.market = Market(
                 (await self.client.markets.get_perpetual_markets(self.MARKET_ID))["markets"][self.MARKET_ID]
@@ -376,7 +372,6 @@ class DydxInterface:
         logging.info("Cancelling orders")
         print(f"short_term_cancels: {short_term_cancels}")
 
-
         response = await self.node.batch_cancel_orders(
             self.wallet,
             self.dydx_subaccount,
@@ -458,7 +453,6 @@ class DydxInterface:
                 self.wallet.sequence += 1
                 print('Wallet sequence post increment: ', self.wallet.sequence)
 
-
             except Exception as e:
                 if "account sequence mismatch" in str(e):
                     # Update wallet.sequence and retry
@@ -503,7 +497,6 @@ class DydxInterface:
             logging.error("Client is not initialized. Cannot fetch positions.")
             return []
         
-
         open_positions = await self.fetch_open_positions()
 
         for position in open_positions:
