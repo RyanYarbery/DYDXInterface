@@ -574,23 +574,7 @@ async def main():
     # free_collateral = await dydx_interface.fetch_free_collateral()
     # print("Free collateral: ", free_collateral)
    
-
 if __name__ == "__main__":
     asyncio.run(main())
     
-# Place Limit Order
-# fetch_order_by_id
-# fetch_positions
-# fetch_open_positions
-# fetch_account_balance
-# fetch_equity
-# fetch_position_size
-# fetch_leverage
-# fetch_eth_market_data
-# fetch_eth_price
-# cancel_order
-# cancel_all_orders
-# place_trailing_stop_order
-# calculate_new_price
-# clear_existing_orders_and_positions
 
