@@ -1,4 +1,3 @@
-
 #  The answer to all of my weird package issues is python -m pip install
 #  Conda install may still be lame
 
@@ -9,6 +8,7 @@ import logging
 from decimal import Decimal
 from decimal import ROUND_DOWN
 import datetime
+import grpc
 
 from v4_proto.dydxprotocol.clob.order_pb2 import Order, OrderId
 from v4_proto.dydxprotocol.subaccounts.subaccount_pb2 import SubaccountId
@@ -32,37 +32,39 @@ logging.basicConfig(level=logging.INFO,
 
 class DydxInterface:
 
-    def __init__(self, environment='test'):
-        """
-        Initializes the dYdX v4 client with the environment's API credentials.
-        
-        :param environment: Set to 'main' for mainnet, otherwise defaults to testnet.
-        """
-        self.environment = environment.lower()
-        self.client = None
-        self.MARKET_ID = "ETH-USD"
-        self.clobPairId = 1
+    @classmethod
+    async def create(cls, environment='test'):
+        """Factory method to create a DydxInterface instance asynchronously."""
+        instance = cls.__new__(cls)
+        instance.environment = environment.lower()
+        instance.client = None
+        instance.MARKET_ID = "ETH-USD"
+        instance.clobPairId = 1
 
-        if self.environment == 'main':
-            self.dydx_address = os.getenv('dydx_address') # Potential for there to be a different address and mnemonic for main than test
-            self.dydx_mnemonic = os.getenv('dydx_mnemonic')
-            self.dydx_subaccount = 0
-            self.net_node = 'mainnet_node'
-            self.rest_indexer="https://indexer.dydx.trade"
-            self.websocket_indexer="wss://indexer.dydx.trade/v4/ws"
-            self.node_url="dydx-grpc.publicnode.com"
-            self.NETWORK = make_mainnet(
-                node_url=self.node_url,  # No 'https://' prefix
-                rest_indexer=self.rest_indexer,
-                websocket_indexer=self.websocket_indexer
+        if instance.environment == 'main':
+            instance.dydx_address = os.getenv('dydx_address')
+            instance.dydx_mnemonic = os.getenv('dydx_mnemonic')
+            instance.dydx_subaccount = 0
+            instance.net_node = 'mainnet_node'
+            instance.rest_indexer="https://indexer.dydx.trade"
+            instance.websocket_indexer="wss://indexer.dydx.trade/v4/ws"
+            instance.node_url="dydx-grpc.publicnode.com"
+            instance.NETWORK = make_mainnet(
+                node_url=instance.node_url,
+                rest_indexer=instance.rest_indexer,
+                websocket_indexer=instance.websocket_indexer
             )
         else:
-            self.dydx_address = os.getenv('dydx_address')
-            self.dydx_mnemonic = os.getenv('dydx_mnemonic')
-            self.NETWORK = TESTNET
-            self.dydx_subaccount = 0
-        
-        self._client_task = asyncio.create_task(self._setup_client())
+            instance.dydx_address = os.getenv('dydx_test_address')
+            instance.dydx_mnemonic = os.getenv('dydx_test_mnemonic')
+            instance.NETWORK = TESTNET
+            instance.dydx_subaccount = 0
+
+        await instance._setup_client()
+        return instance
+
+    def __init__(self):
+        raise TypeError("DydxInterface must be created using create()")
         
     async def _setup_client(self):
         """Asynchronous internal client setup method."""
@@ -213,7 +215,7 @@ class DydxInterface:
         if not equity:
             logging.info("No equity to fetch.")
         subaccount = equity.get('subaccount', {})
-        return subaccount.get('equity')
+        return float(subaccount.get('equity', '0'))
     
     async def fetch_free_collateral(self):
         """Fetch free collateral asynchronously."""
@@ -232,18 +234,19 @@ class DydxInterface:
         if not free_collateral:
             logging.info("No free collateral to fetch.")
         subaccount = free_collateral.get('subaccount', {})
-        return subaccount.get('freeCollateral')
+        return float(subaccount.get('freeCollateral'))
 
     async def fetch_position_size(self):
         # Assuming that we are operating with one open position at all times
         open_positions = await self.fetch_open_positions()
         print('Open Positions: ', open_positions)
-        size = open_positions['size'] if open_positions else None
-        size = abs(Decimal(size))
+        # RYAN LOOK HERE, This changed, added the [0]
+        size = open_positions[0]['size'] if open_positions else None
+        size = abs(Decimal(size)) if size else Decimal('0')
         if not size:
             # print("No open positions found to fetch size.")
             logging.info("No positions found to fetch size")
-        return size
+        return float(size)
     
     async def fetch_eth_price(self):
         # Fetches oracle price
@@ -281,7 +284,7 @@ class DydxInterface:
         elif side_input.lower() == 'sell':
             side = Order.Side.SIDE_SELL
 
-        current_block = await self.node.latest_block_height()
+        current_block = await self.get_current_block()
 
         new_order = self.market.order(
             order_id=order_id,
@@ -315,11 +318,8 @@ class DydxInterface:
             logging.error("Node client is not initialized. Cannot cancel order.")
             return []
         
-        current_block = await self.node.latest_block_height()
-        if not current_block:
-            logging.error("Could not get current block. Cannot cancel order.")
-            return[]
-        
+        current_block = await self.get_current_block()
+
         good_til_block = current_block + 60
 
         response = await self.node.cancel_order(
@@ -362,11 +362,8 @@ class DydxInterface:
 
         short_term_cancels = OrderBatch(clob_pair_id=self.clobPairId, client_ids=client_ids)
 
-        current_block = await self.node.latest_block_height()
-        if not current_block:
-            logging.error("Could not get current block. Cannot cancel orders.")
-            return[]
-        
+        current_block = await self.get_current_block()
+
         good_til_block = current_block + 60
         
         logging.info("Cancelling orders")
@@ -422,10 +419,7 @@ class DydxInterface:
             except Exception as e:
                 logging.error(f"Error processing order: {order}. Error: {e}")
 
-        current_block = await self.node.latest_block_height()
-        if not current_block:
-            logging.error("Could not get current block. Cannot cancel orders.")
-            return []
+        current_block = await self.get_current_block()
 
         good_til_block = current_block + 60
 
@@ -434,7 +428,7 @@ class DydxInterface:
         for order in order_ids:
             order_id = order["order_id"]
             good_til_block_time = order["goodTilBlockTime"]
-            print('Wallet sequence pre increment: ', self.wallet.sequence)
+            # print('Wallet sequence pre increment: ', self.wallet.sequence)
             # Small delay to account for network propagation
             await asyncio.sleep(2)
 
@@ -451,7 +445,7 @@ class DydxInterface:
                 
                 # Increment wallet sequence manually
                 self.wallet.sequence += 1
-                print('Wallet sequence post increment: ', self.wallet.sequence)
+                # print('Wallet sequence post increment: ', self.wallet.sequence)
 
             except Exception as e:
                 if "account sequence mismatch" in str(e):
@@ -544,37 +538,58 @@ class DydxInterface:
 
         await self.close_positions()
 
-        return None 
-    
+    async def get_current_block(self):
+        # Retry logic for `latest_block_height`
+        max_retries = 3
+        retry_delay = 1  # seconds
+        current_block = None
+
+        for attempt in range(max_retries):
+            try:
+                current_block = await self.node.latest_block_height()
+                break  # Exit loop if successful
+            except grpc.RpcError as e:
+                if e.code() == grpc.StatusCode.UNAVAILABLE:
+                    logging.warning(f"Attempt {attempt + 1}/{max_retries}: Unable to fetch latest block height. Retrying in {retry_delay} second(s)...")
+                    await asyncio.sleep(retry_delay)
+                else:
+                    logging.error(f"Failed to fetch latest block height due to unexpected error: {e}")
+                    raise  # Re-raise non-transient errors
+
+        if current_block is None:
+            raise RuntimeError("Failed to fetch latest block height after multiple retries.")
+        
+        return current_block
+
 # Usage Example
-async def main():
-    dydx_interface = DydxInterface(environment='test')
-    await asyncio.sleep(1)  # Allow time for async setup
-    # position = await dydx_interface.fetch_open_positions()
-    # print('Position: ', position)
-    # size = await dydx_interface.fetch_position_size()
-    # print("Position Size:", size)
-    # price = await dydx_interface.fetch_eth_price()
-    # print("ETH Price: ", price)
-    # account_info = await dydx_interface.fetch_account()
-    # print("Account Info: ", account_info)
-    # price = await dydx_interface.fetch_eth_price()
-    # price = (price + (price * 0.01))
-    # order = await dydx_interface.place_limit_order('Sell', .01, price)
-    # print('Order: ', order)
-    # orders = await dydx_interface.fetch_open_orders()
-    # print('Orders: ', orders)
-    # client_ids = [order['clientId'] for order in orders]
-    # print('Client IDs: ', client_ids)
-    # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
-    # print('Market info: ', market_info)
-    # response = await dydx_interface.cancel_all_orders()
-    # print(f'Orders Cancelled = {response}')
-    # response = await dydx_interface.clear_existing_orders_and_positions()
-    # free_collateral = await dydx_interface.fetch_free_collateral()
-    # print("Free collateral: ", free_collateral)
+# async def main():
+#     dydx_interface = await DydxInterface.create(environment='test')
+#     await asyncio.sleep(1)  # Allow time for async setup
+#     # position = await dydx_interface.fetch_open_positions()
+#     # print('Position: ', position)
+#     # size = await dydx_interface.fetch_position_size()
+#     # print("Position Size:", size)
+#     # price = await dydx_interface.fetch_eth_price()
+#     # print("ETH Price: ", price)
+#     # account_info = await dydx_interface.fetch_account()
+#     # print("Account Info: ", account_info)
+#     # price = await dydx_interface.fetch_eth_price()
+#     # price = (price + (price * 0.01))
+#     # order = await dydx_interface.place_limit_order('Sell', .01, price)
+#     # print('Order: ', order)
+#     # orders = await dydx_interface.fetch_open_orders()
+#     # print('Orders: ', orders)
+#     # client_ids = [order['clientId'] for order in orders]
+#     # print('Client IDs: ', client_ids)
+#     # market_info = await dydx_interface.client.markets.get_perpetual_markets(dydx_interface.MARKET_ID)
+#     # print('Market info: ', market_info)
+#     # response = await dydx_interface.cancel_all_orders()
+#     # print(f'Orders Cancelled = {response}')
+#     # response = await dydx_interface.clear_existing_orders_and_positions()
+#     # free_collateral = await dydx_interface.fetch_free_collateral()
+#     # print("Free collateral: ", free_collateral)
    
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())
     
 
